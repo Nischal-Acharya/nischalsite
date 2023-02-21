@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <!-- MENU ENCABEZADO -->
+    <div class="contenedor-header">
+        <header>
+            <div class="logo">
+                <a href="#">Nishchal</a>
+            </div>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#inicio" onclick="seleccionar()">START</a></li>
+                    <li><a href="#sobremi" onclick="seleccionar()">ABOUT ME</a></li>
+                    <li><a href="#skills" onclick="seleccionar()">SKILLS</a></li>
+                    <li><a href="#curriculum" onclick="seleccionar()">RESUME</a></li>
+                    <li><a href="#portfolio" onclick="seleccionar()">PORTFOLIO</a></li>
+                    <li><a href="#contacto" onclick="seleccionar()">CONTACT</a></li>
+                </ul>
+            </nav>
+            <div class="nav-responsive" onclick="mostrarOcultarMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
+    </div>
+
+    <!-- SECCION INICIO -->
+    <section id="inicio" class="inicio">
+        <div class="contenido-banner">
+            <div class="contenedor-img">
+                <img src="img/hero.png" alt="">
+            </div>
+            <h1>NISHCHAL ACHARYA</h1>
+            <h2>Software Engineer - UI/UX Expert</h2>
+            <div class="redes">
+                <a href="https://www.facebook.com/nishchalvloggs"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://twitter.com/lahcsinayrahca"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://join.skype.com/invite/wmfIP6n1RTUp"><i class="fa-brands fa-skype"></i></a>
+                <a href="https://www.linkedin.com/in/nischal--acharya"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://rss.com/podcasts/lahcsinayrahca/"><i class="fa-solid fa-rss"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCION SOBRE MI -->
+    <section id="sobremi" class="sobremi">
+        <div class="contenido-seccion">
+            <h2>About me</h2>
+            <p><span>Hi, I'm Nishchal Acharya.</span> I am a computer engineering student with a strong interest in web and app development. I have a solid foundation in computer science principles and programming languages, and I am always looking for opportunities to expand my skillset and take on new challenges. I am particularly interested in the intersection of software development and design, and I enjoy working on projects that involve both technical and creative elements. In my free time, I am an avid learner who enjoys exploring new technologies and staying up-to-date on the latest trends in the field. Overall, I am a driven and passionate computer engineering student with a bright future ahead in the field of web and app development.</p>
+
+            <div class="fila">
+                <!-- datos personales -->
+                <div class="col">
+                    <h3>Personal information</h3>
+                    <ul>
+                        <li>
+                            <strong>Birthday</strong>
+                            27-08-2004
+                        </li>
+                        <li>
+                            <strong>Phone</strong>
+                            +977 9817-099134
+                        </li>
+                        <li>
+                            <strong>Email</strong>
+                            nischalacharya345@gmail.com
+                        </li>
+                        <li>
+                            <strong>Website</strong>
+                            www.nishchalacharya.com.np
+                        </li>
+                        <li>
+                            <strong>Address</strong>
+                            Bahradashi 3, Jhapa Nepal
+                        </li>
+                        <li>
+                            <strong>Post</strong>
+                            <span>FREELANCE</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- intereses -->
+                <div class="col">
+                    <h3>Interests</h3>
+                    <div class="contenedor-intereses">
+                        <div class="interes">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>GAMES</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-headphones"></i>
+                            <span>MUSIC</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-plane"></i>
+                            <span>TRAVEL</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-brands fa-apple"></i>
+                            <span>MAC OS</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-person-hiking"></i>
+                            <span>DEPORT</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-book"></i>
+                            <span>LIBROS</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-car"></i>
+                            <span>BOOKS</span>
+                        </div>
+                        <div class="interes">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>PHOTOS</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <button>
+                Download CV <i class="fa-solid fa-download"></i>
+                <span class="overlay"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- SECCION SKILLS -->
+    <section class="skills" id="skills">
+        <div class="contenido-seccion">
+            <h2>Skills</h2>
+            <div class="fila">
+                <!-- Technical Skill -->
+                <div class="col">
+                    <h3>Technical Skills</h3>
+                    <div class="skill">
+                        <span>Javascript</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>75%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>HTML & CSS</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>89%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Photoshop</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>95%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Wordpress</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>81%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Drupa</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>55%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Professional Skills -->
+                <div class="col">
+                    <h3>Professional Skills</h3>
+                    <div class="skill">
+                        <span>Communication</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>80%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Teamwork</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>70%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Creativity</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>99%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Dedication</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>65%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill">
+                        <span>Project Management</span>
+                        <div class="barra-skill">
+                            <div class="progreso">
+                                <span>94%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCION CURRICULUM -->
+    <section id="curriculum" class="curriculum">
+        <div class="contenido-seccion">
+            <h2>Resume</h2>
+            <div class="fila">
+                <div class="col izquierda">
+                    <h3>Education</h3>
+                    <div class="item izq">
+                        <h4>Basic Nursery to 5</h4>
+                        <span class="casa">Saraswati Boarding School</span>
+                        <span class="fecha">2008 - 2016</span>
+                        <p>I attended Saraswati Boarding School for my basic education. During my time there, I gained a strong foundation in subjects like mathematics, science, and language arts. The boarding school environment allowed me to develop independence and responsibility.</p>
+                        <div class="conectori">
+                            <div class="circuloi"></div>
+                        </div>
+                    </div>
+                    <div class="item izq">
+                        <h4>Primary 6 to 8</h4>
+                        <span class="casa">Saraswati School</span>
+                        <span class="fecha">2016 - 2021</span>
+                        <p>I received my primary education from Saraswati School, which is located in my hometown. Saraswati School is one of the best educational institutions in the area, known for its excellent academic programs and supportive teachers. During my time at Saraswati School, I learned the importance of hard work, dedication, and perseverance.</p>
+                        <div class="conectori">
+                            <div class="circuloi"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="item izq">
+                        <h4>Computer Engineering 9 to -</h4>
+                        <span class="casa">Pashupati Technical School</span>
+                        <span class="fecha">2021 - Till</span>
+                        <p>I am currently studying computer engineering at Pashupati Technical School. As a student here, I have gained a strong foundation in computer science and engineering principles, as well as practical skills in programming, software development, and hardware design. The school has provided me with a challenging yet supportive learning environment, and I have had the opportunity to work on several interesting projects both independently and in teams.</p>
+                        <div class="conectori">
+                            <div class="circuloi"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col derecha">
+                    <h3>Work experience</h3>
+                    <div class="item der">
+                        <h4>Front Development</h4>
+                        <span class="casa">source: youtube, school</span>
+                        <span class="fecha">2019 - 2020</span>
+                        <p>I am a self-taught frontend web developer. I learned web development by taking a course on YouTube, and I was able to apply the skills I learned in my school education to build my first website. My school education gave me a strong foundation in programming concepts and problem-solving skills, which helped me to grasp the concepts of web development quickly. </p>
+                        <div class="conectord">
+                            <div class="circulod"></div>
+                        </div>
+                    </div>
+                    <div class="item der">
+                        <h4>Back Development</h4>
+                        <span class="casa">source: youtube, school</span>
+                        <span class="fecha">2020 - 2021</span>
+                        <p>I have learned backend development through a combination of YouTube courses and my school education. I have always been fascinated by how technology works behind the scenes, and I decided to take a deep dive into backend development by watching tutorials and building projects on my own.</p>
+                        <div class="conectord">
+                            <div class="circulod"></div>
+                        </div>
+                    </div>
+                    <div class="item der">
+                        <h4>Flutter App Development</h4>
+                        <span class="casa">source: youtube, github, e-lern</span>
+                        <span class="fecha">2021 - 2023</span>
+                        <p>I recently learned how to develop Flutter apps with the help of a YouTube course and GitHub. Through the course, I was able to gain a strong understanding of Flutter's framework, widgets, and APIs, and I learned how to build responsive and dynamic user interfaces.</p>
+                        <div class="conectord">
+                            <div class="circulod"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCION PORTFOLIO -->
+    <section id="portfolio" class="portfolio">
+        <div class="contenido-seccion">
+            <h2>PORTFOLIO</h2>
+            <div class="galeria">
+                <div class="proyecto">
+                    <img src="img/p1.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="proyecto">
+                    <img src="img/p2.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="proyecto">
+                    <img src="img/p3.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="proyecto">
+                    <img src="img/p4.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="proyecto">
+                    <img src="img/p5.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+                <div class="proyecto">
+                    <img src="img/p6.jpg" alt="">
+                    <div class="overlay">
+                        <h3>Creative design</h3>
+                        <p>Photography</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCION CONTACTO -->
+    <section id="contacto" class="contacto">
+        <div class="contenido-seccion">
+            <h2>CONTACT</h2>
+            <div class="fila">
+                <!-- Formulario -->
+                <div class="col">
+                    <input type="text" placeholder="Your name">
+                    <input type="text" placeholder="Phone number">
+                    <input type="text" placeholder="Mail address">
+                    <input type="text" placeholder="Issue">
+                    <textarea name="" id="" cols="30" rows="10" placeholder="Message"></textarea>
+                    <button>
+                        Send Message <i class="fa-solid fa-paper-plane"></i>
+                        <span class="overlay"></span>
+                    </button>
+                </div>
+                <!-- Mapa -->
+                <div class="col">
+                    <img src="img/ubicacion.png" alt="">
+                    <div class="info">
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-location-dot"></i>
+                                Bahradashi 3, Jhapa Nepal
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-mobile-screen"></i>
+                                Phone: +977 9817-099134 
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-envelope"></i>
+                                Email: nischalacharya345@gmail.com
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <a href="#inicio" class="arriba">
+            <i class="fa-solid fa-angles-up"></i>
+        </a>
+        <div class="redes">
+            <a href="https://www.facebook.com/nishchalvloggs"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://twitter.com/lahcsinayrahca"><i class="fa-brands fa-twitter"></i></a>
+            <a href="https://join.skype.com/invite/wmfIP6n1RTUp"><i class="fa-brands fa-skype"></i></a>
+            <a href="https://www.linkedin.com/in/nischal--acharya"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://rss.com/podcasts/lahcsinayrahca/"><i class="fa-solid fa-rss"></i></a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
