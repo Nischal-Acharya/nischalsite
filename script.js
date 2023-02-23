@@ -45,7 +45,7 @@ function downloadFile() {
   // create a new element to represent the file
   var element = document.createElement('a');
   // set the file's URL and name
-  element.setAttribute('href', 'cv-download');
+  element.setAttribute('href', 'cv-download/nishchal_AcharyaCV.pdf');
   element.setAttribute('download', 'nishchal_AcharyaCV.pdf');
   // simulate a click on the new element to start the download
   element.style.display = 'none';
