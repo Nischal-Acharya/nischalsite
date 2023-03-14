@@ -22,7 +22,12 @@
 	<main>
 		<section class="download-section">
 			<h2>Free Youtube Views</h2>
-    <iframe id="video" src="https://www.youtube.com/embed/uF2Y8pq4G1w?autoplay=1" frameborder="0" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe id="video" src="https://www.youtube.com/embed/uF2Y8pq4G1w" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<button id="play-button">Play</button>
+
 			<p>Paste the video URL below to get unlimited views</p>
 			<form>
 				<input type="text" placeholder="Enter video URL">
@@ -75,6 +80,20 @@
 	</footer>
 </body>
 <script>
+
+var video = document.getElementById("video");
+var playButton = document.getElementById("play-button");
+
+playButton.addEventListener("click", function() {
+  video.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+});
+
+window.onload = function() {
+  video.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+};
+
+
+
   setInterval(getviews, 100000000);
   
   function getviews() {
