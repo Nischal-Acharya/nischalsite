@@ -65,7 +65,7 @@ form.addEventListener('submit', event => {
 
 	const videoUrl = videoUrlInput.value;
 	const videoId = getVideoId(videoUrl);
-	const downloadUrl = `https://www.youtubeinmp4.com/redirect.php?video=${videoId}`;
+	const downloadUrl = `https://ss.youtube.com/${videoId}`;
 
 	window.location.href = downloadUrl;
 });
