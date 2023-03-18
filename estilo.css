@@ -712,3 +712,14 @@ footer .arriba{
         width: 100%;
     }
 }
+
+/* disable zoom on mobile devices */
+@media screen and (max-width: 480px) {
+  /* set the viewport width to a fixed value */
+  meta[name=viewport] {
+    width: device-width;
+    initial-scale: 1.0;
+    maximum-scale: 1.0;
+    user-scalable: no;
+  }
+}
