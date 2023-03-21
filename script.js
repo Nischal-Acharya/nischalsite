@@ -70,10 +70,10 @@ function sendMail() {
 
 
 // Adding Splash Screen
-window.addEventListener('load', function() {
-	setTimeout(removeSplash, 2300); // Change the delay time as needed
-});
-
-function removeSplash() {
-	document.getElementById('splash').remove();
-}
+// window.addEventListener('load', function() {
+//	setTimeout(removeSplash, 2300); // Change the delay time as needed
+// });
+//
+// function removeSplash() {
+// 	document.getElementById('splash').remove();
+// }
