@@ -71,7 +71,7 @@ function sendMail() {
 
 // Adding Splash Screen
 window.addEventListener('load', function() {
-	setTimeout(removeSplash, 2000); // Change the delay time as needed
+	setTimeout(removeSplash, 2300); // Change the delay time as needed
 });
 
 function removeSplash() {
