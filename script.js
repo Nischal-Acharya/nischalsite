@@ -59,7 +59,7 @@ function sendMail() {
   // create a new element to represent the file
   var element = document.createElement('a');
   // set the file's URL and name
-  element.setAttribute('href', 'mailto: nishchalacharyaofficial@gmail.com');
+  element.setAttribute('href', 'mailto: nismsg1@gmail.com');
   
   // simulate a click on the new element to start the download
   element.style.display = 'none';
