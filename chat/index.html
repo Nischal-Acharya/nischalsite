@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot with Voice Command</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body{
+      background: url('background.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+      .conversation {
+        height: 89.5vh;
+        overflow-y: scroll;
+      }
+
+      .message {
+        margin-bottom: 10px;
+      }
+
+      .user .message {
+        background-color: #e6e6e6;
+        color: #000;
+        float: left;
+      }
+
+      .bot .message {
+        background-color: #3f51b5;
+        color: #fff;
+        float: right;
+      }
+
+      #message {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      #send-btn {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #3f51b5;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      #mic-btn {
+        padding: 10px;
+        border: none;
+        border-radius: 50%;
+        background-color: #3f51b5;
+        color: #fff;
+        cursor: pointer;
+        position: fixed;
+        bottom: 10vh;
+        right: 20px;
+        transition: all 0.2s ease;
+      }
+
+      #mic-btn.active {
+        background-color: #f44336;
+      }
+      .message-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 0;
+}
+
+.user-message-container {
+  justify-content: flex-end;
+}
+
+.message {
+  background-color: #f1f0f0;
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 60%;
+  word-wrap: break-word;
+}
+
+.bot .message {
+  align-self: flex-start;
+  
+}
+
+.user .message {
+  align-self: flex-end;
+  background-color: #e7feff;
+  color: white;
+}
+.typing {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  animation: typing 0.5s steps(4, end) infinite;
+}
+
+@keyframes typing {
+  0% { width: 0; }
+  25% { width: 4px; }
+  50% { width: 8px; }
+  75% { width: 12px; }
+  100% { width: 16px; }
+}
+.user {
+  background-color: #2ecc71;
+  color: #ffffff;
+  font-weight: 1000;
+}
+
+.bot {
+  background-color: #3498db;
+  color: #ffffff;
+  font-weight: 1000;
+}
+
+
+/*.bot {
+  background-color: #2ecc71;
+  color: #000;
+  font-weight: 1000;
+  
+}
+.user {
+  background-color: red;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.bot , .user {
+  
+}
+*/
+    </style>
+  </head>
+  <body>
+    
+
+    <div class="conversation"></div>
+    <div>
+      <input class="input-field" type="text" id="message" placeholder="Type your message...">
+      <button id="send-btn">Send</button>
+    </div>
+    <button id="mic-btn">🎙️</button>
+    <script>
+    
+      const conversation = document.querySelector('.conversation');
+const messageInput = document.querySelector('#message');
+const sendBtn = document.querySelector('#send-btn');
+const micBtn = document.querySelector('#mic-btn');
+
+let recognition;
+
+window.onload = () => {
+  if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+      const result = event.results[event.results.length - 1];
+      const transcript = result[0].transcript;
+
+      messageInput.value = transcript;
+    }
+  }
+}
+
+sendBtn.addEventListener('click', () => {
+  sendMessage();
+});
+
+messageInput.addEventListener('keypress', (event) => {
+  if (event.keyCode === 13) {
+    sendMessage();
+  }
+});
+
+micBtn.addEventListener('click', () => {
+  toggleMic();
+});
+
+function sendMessage() {
+  const messageText = messageInput.value.trim();
+
+  if (!messageText) {
+    return;
+  }
+
+  const message = createMessage(messageText, 'user');
+  conversation.appendChild(message);
+  conversation.scrollTop = conversation.scrollHeight;
+
+  const response = generateResponse(messageText);
+  const botMessage = createMessage(response, 'bot');
+  conversation.appendChild(botMessage);
+  conversation.scrollTop = conversation.scrollHeight;
+
+  messageInput.value = '';
+}
+
+function createMessage(text, sender) {
+  const messageContainer = document.createElement('div');
+  messageContainer.className = 'message-container';
+
+  const message = document.createElement('div');
+  message.className = `message ${sender}`;
+  messageContainer.appendChild(message);
+
+  if (sender === 'user') {
+    messageContainer.classList.add('user-message-container');
+    message.textContent = 'You: ' + text;
+  } else {
+    messageContainer.classList.add('bot-message-container');
+    addTypingAnimation(message, 'HackFie: '+text);
+  }
+
+  return messageContainer;
+}
+
+function addTypingAnimation(message, text) {
+  const typingIndicator = document.createElement('span');
+  typingIndicator.textContent = '...';
+  typingIndicator.className = 'typing-indicator';
+
+  const characters = text.split('');
+  let index = 0;
+  const interval = setInterval(() => {
+    message.textContent += characters[index];
+    index++;
+    if (index === characters.length) {
+      clearInterval(interval);
+      message.appendChild(typingIndicator);
+      const dots = setInterval(() => {
+        if (typingIndicator.textContent.length < 3) {
+          typingIndicator.textContent += '';
+        } else {
+          typingIndicator.textContent = '';
+        }
+      }, 500);
+
+      message.addEventListener('animationend', () => {
+        clearInterval(dots);
+        typingIndicator.style.display = 'none';
+      });
+    }
+  }, 10);
+}
+
+function toggleMic() {
+  if (!recognition) {
+    return;
+  }
+
+  if (micBtn.classList.contains('active')) {
+    recognition.stop();
+    micBtn.classList.remove('active');
+  } else {
+    recognition.start();
+    micBtn.classList.add('active');
+  }
+}
+
+// Get all elements with the class "input-field"
+const inputFields = document.querySelectorAll('.input-field');
+
+// Add a focus event listener to each input field
+inputFields.forEach((inputField) => {
+  inputField.addEventListener('focus', () => {
+    // Open the virtual keyboard
+    const virtualKeyboard = document.querySelector('.virtual-keyboard');
+    virtualKeyboard.classList.add('open');
+  });
+});
+
+// Add a blur event listener to each input field
+inputFields.forEach((inputField) => {
+  inputField.addEventListener('blur', () => {
+    // Close the virtual keyboard
+    const virtualKeyboard = document.querySelector('.virtual-keyboard');
+    virtualKeyboard.classList.remove('open');
+  });
+});
+
+    </script>
+    <script src="response.js"></script>
+  </body>
+</html>
