@@ -68,4 +68,4 @@ function sendMail() {
   document.body.removeChild(element);
 }
 
-
+function policy() {window.location.replace('https://nishchalacharya.com.np/Privacy-Policy');}
