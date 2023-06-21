@@ -39,7 +39,7 @@ html{
 .contenedor-header header nav ul li a{
     text-align: none;
     color: #fff;
-    margin: 0 15px;
+    margin: 0 9px;
     padding: 3px;
     transition: .5s;
     text-decoration: none;
