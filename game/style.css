@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+body {
+    background-image: url(rock_paper_scissor.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    height: 70vh;
+    width: 50vw;
+    background-color: rgba(255, 255, 255, 0.637);
+    margin: 15vh 25vw;
+    border-radius: 10px;
+}
+
+.app_title {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.637);
+    padding: 10px;
+    border-radius: 10px;
+
+}
+
+.won_text {
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+
+}
+
+.flexibility {
+    display: flex;
+    justify-content: space-around;
+}
+
+.computer {
+
+    height: 17vh;
+    width: 17vh;
+    margin: 10vh;
+    background-image: url(computer.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.you {
+
+    height: 17vh;
+    width: 17vh;
+    margin: 10vh;
+    background-image: url(what.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+
+}
+
+.selectflex {
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 7px 5px 5px rgba(70, 58, 58, 0.486);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.877);
+    height: 13vh;
+    width: 25vw;
+    margin: 1vw 12.5vw;
+
+}
+
+.rock {
+    margin-top: 1.5vh;
+    height: 10vh;
+    width: 10vh;
+
+    background-image: url(rock.png);
+    background-size: cover;
+    padding: 2px;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.paper {
+    margin-top: 1.5vh;
+    height: 10vh;
+    padding: 2px;
+    width: 10vh;
+    transition: 0.2s ease-in-out;
+
+    border-radius: 10px;
+    background-image: url(paper.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.scissor {
+    margin-top: 1.5vh;
+    height: 10vh;
+    transition: 0.2s ease-in-out;
+
+    width: 10vh;
+    border-radius: 10px;
+    background-image: url(scissor.png);
+    background-size: cover;
+    padding: 2px;
+    background-repeat: no-repeat;
+
+}
+
+.rock:hover {
+    background-color: rgba(255, 0, 0, 0.61);
+
+}
+
+.paper:hover {
+    background-color: rgba(0, 0, 255, 0.562);
+
+}
+
+.scissor:hover {
+    background-color: rgba(0, 128, 0, 0.521);
+
+}
+
+.rock:active {
+    rotate: 360deg;
+}
+
+.paper:active {
+    rotate: 360deg;
+}
+
+.scissor:active {
+    rotate: 360deg;
+}
