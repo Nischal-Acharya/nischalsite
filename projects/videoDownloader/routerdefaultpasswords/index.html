@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Default Credentials</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #E3F2FD; /* Light blue background */
+        }
+        .table-container {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px; /* Rounded corners */
+            overflow: hidden; /* Prevents overflow of rounded corners */
+        }
+        .table-row {
+            transition: background-color 0.3s;
+        }
+        .table-row:hover {
+            background-color: #e0f7fa; /* Light cyan on hover */
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center h-screen p-4 overflow-y-auto">
+    <h1 class="text-3xl font-bold mb-4">Router Default Credentials</h1>
+    <input type="text" id="search" placeholder="Search routers..." class="w-full max-w-md p-3 border border-gray-300 rounded-md mb-4 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+
+    <div class="overflow-y-auto h-72 w-full max-w-md">
+        <table id="router-table" class="min-w-full bg-white border border-gray-300 table-container rounded-lg">
+            <thead>
+                <tr class="bg-blue-500 text-white">
+                    <th class="py-2 px-4 border-b">Vendor</th>
+                    <th class="py-2 px-4 border-b">Model</th>
+                    <th class="py-2 px-4 border-b">Username</th>
+                    <th class="py-2 px-4 border-b">Password</th>
+                </tr>
+            </thead>
+            <tbody id="router-list">
+                <!-- Router items will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+      
+      // Sample data for routers with vendor, model, username, and password
+const routers = [
+    { vendor: "TP-Link", model: "TL-WR841N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR740N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR902AC", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR2543ND", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WDR4300", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR1043ND", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR940N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-MR3020", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA850RE", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-R600VPN", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-MR3040", username: "admin", password: "admin" },
+{ vendor: "Netgear", model: "R7000", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "R6400", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "WNR3500L", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "WNDR4500", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "R6200", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "D7000", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "R8000", username: "admin", password: "password" },
+{ vendor: "D-Link", model: "DIR-615", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-825", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-860L", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-882", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-859", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-300", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-820L", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC68U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC66U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC87U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-N66U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC5300", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC3200", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "DSL-AC68U", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA7500", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT3200ACM", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT1900AC", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA9500", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA8500", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT54GL", username: "admin", password: "admin" },
+{ vendor: "Cisco", model: "RV340", username: "cisco", password: "cisco" },
+{ vendor: "Cisco", model: "RV260", username: "cisco", password: "cisco" },
+{ vendor: "TP-Link", model: "TL-R860", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-MR6400", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR802N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA801ND", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA801N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR2543", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR740", username: "admin", password: "admin" },
+{ vendor: "Netgear", model: "R7800", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "Nighthawk RAX80", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "RAX120", username: "admin", password: "password" },
+{ vendor: "D-Link", model: "DIR-2660", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-878", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-615", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-632", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-N12", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC53", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC56U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AC68R", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA6350", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT1200AC", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT32X", username: "admin", password: "admin" },
+{ vendor: "Cisco", model: "RV160", username: "cisco", password: "cisco" },
+{ vendor: "Cisco", model: "RV042G", username: "cisco", password: "cisco" },
+{ vendor: "TP-Link", model: "TL-MR3420", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR150", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WR100", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA901ND", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA901N", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-MR100", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-WA854RE", username: "admin", password: "admin" },
+{ vendor: "TP-Link", model: "TL-MR6400", username: "admin", password: "admin" },
+{ vendor: "Netgear", model: "RAX70", username: "admin", password: "password" },
+{ vendor: "Netgear", model: "RAX50", username: "admin", password: "password" },
+{ vendor: "D-Link", model: "DIR-1970", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-2640", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-301", username: "admin", password: "admin" },
+{ vendor: "D-Link", model: "DIR-611", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AX3000", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AX88U", username: "admin", password: "admin" },
+{ vendor: "Asus", model: "RT-AX92U", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA7500", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "WRT3200ACM", username: "admin", password: "admin" },
+{ vendor: "Linksys", model: "EA9500", username: "admin", password: "admin" },
+{ vendor: "Cisco", model: "RV340", username: "cisco", password: "cisco" },
+{ vendor: "Cisco", model: "RV260", username: "cisco", password: "cisco" }
+
+];
+
+// Function to display routers in the table
+function displayRouters(routers) {
+    const routerList = document.getElementById('router-list');
+    routerList.innerHTML = ''; // Clear existing content
+    routers.forEach(router => {
+        const tr = document.createElement('tr');
+        tr.className = "table-row";
+        tr.innerHTML = `
+            <td class="py-2 px-4 border-b">${router.vendor}</td>
+            <td class="py-2 px-4 border-b">${router.model}</td>
+            <td class="py-2 px-4 border-b"><i class="fas fa-user text-blue-600"></i> ${router.username}</td>
+            <td class="py-2 px-4 border-b"><i class="fas fa-lock text-blue-600"></i> ${router.password}</td>
+        `;
+        routerList.appendChild(tr);
+    });
+}
+
+// Search functionality with filters
+document.getElementById('search').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const filteredRouters = routers.filter(router => 
+        router.vendor.toLowerCase().includes(query) ||
+        router.model.toLowerCase().includes(query) ||
+        router.username.toLowerCase().includes(query) ||
+        router.password.toLowerCase().includes(query)
+    );
+    displayRouters(filteredRouters);
+});
+
+// Initial display
+displayRouters(routers);
+
+    </script>
+</body>
+</html>
