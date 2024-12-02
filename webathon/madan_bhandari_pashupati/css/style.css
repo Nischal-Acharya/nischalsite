@@ -1,0 +1,12 @@
+/* UTILITIES CSS */
+
+:root{
+    --main-color: rgb(0,0,48);
+    --background-body-color: 
+}
+html{
+    scroll-behavior: smooth;
+}
+body{
+    background-color: black;
+}
