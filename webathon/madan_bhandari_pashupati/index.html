@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Wellness</title>
+    <script src='https://cdn.tailwindcss.com'></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animation.css">
+
+</head>
+
+<body>
+    <!-- Navigation bar starts from here -->
+    <header class='sticky top-0 shadow-md font-sans tracking-wide relative z-50'>
+
+        <div class='flex flex-wrap items-center justify-between gap-4 px-10 py-4 bg-[#020001] min-h-[70px]'>
+            <a href="javascript:void(0)"><img src="assets/Logo.png" alt="logo" class='w-40' /></a>
+
+            <div id="collapseMenu"
+                class='max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50'>
+                <button id="toggleClose"
+                    class='lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white w-9 h-9 flex items-center justify-center border'>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black"
+                        viewBox="0 0 320.591 320.591">
+                        <path
+                            d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z">
+                        </path>
+                        <path
+                            d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z">
+                        </path>
+                    </svg>
+                </button>
+
+                <ul
+                    class='bg-black lg:flex lg:gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50 uppercase '>
+                    <li class='mb-6 hidden max-lg:block'>
+                        <a href="javascript:void(0)"><img src="assets/Logo.png" alt="logo" class='w-36' /></a>
+                    </li>
+                    <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#home'
+                            class=' text-orange-400 block font-bold text-[15px]'>Home</a></li>
+                    <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#aboutus'
+                            class='hover:text-orange-400 text-white block font-bold text-[15px]'>About us</a></li>
+
+                    <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#features'
+                            class='hover:text-orange-400 text-white block font-bold text-[15px]'>Feature</a></li>
+                    <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#membership'
+                            class='hover:text-orange-400 text-white block font-bold text-[15px]'>Membership</a></li>
+
+                    <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#contact'
+                            class='hover:text-orange-400 text-white block font-bold text-[15px]'>Contact</a></li>
+
+                </ul>
+            </div>
+
+            <div class='flex max-lg:ml-auto'>
+                <button id="toggleOpen" class='lg:hidden'>
+                    <svg class="w-7 h-7" fill="#fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main section starts here -->
+    <main>
+        <!-- Hero section starts from here -->
+        <section id="home" class='slideUp bg-[#020001] dark:bg-gray-900'>
+            <div class='grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12'>
+                <div class='mr-auto place-self-center lg:col-span-7'>
+                    <h1
+                        class='max-w-2xl text-white mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white'>
+                        Your Health Our Excersice</h1>
+                    <p class='max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400'>
+                        Improve your fitness in a group! Join our group fitness class and get a 25% discount on the
+                        monthly membership. <br><br>
+                    
+                        <b class="text-white font-semibold">Bahradashi 3, Jhapa</b>
+                    </p>
+                    <a href='#'
+                        class='inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-orange-400 hover:bg-orange-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900'>
+                        Start Traning
+                        <svg class='w-5 h-5 ml-2 -mr-1' fill='currentColor' viewBox='0 0 20 20'
+                            xmlns='http://www.w3.org/2000/svg'>
+                            <path fill-rule='evenodd'
+                                d='M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z'
+                                clip-rule='evenodd'></path>
+                        </svg>
+                    </a>
+                    <a href='#'
+                        class='text-orange-400 hover:text-black bg-gray-700 inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800'>
+                        Membership
+                    </a>
+                </div>
+                <div class='slideUp hidden lg:mt-0 lg:col-span-5 lg:flex'>
+                    <img src='assets/hero-section.png' alt='mockup'>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us section starts form here -->
+        <section id="aboutus" class="bg-black relative py-10">
+            <div class="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
+                <div class="w-full justify-start items-center gap-12 grid lg:grid-cols-2 grid-cols-1">
+                    <div
+                        class="w-full justify-center items-start gap-6 grid sm:grid-cols-2 grid-cols-1 lg:order-first order-last">
+                        <div class="pt-24 lg:justify-center sm:justify-end justify-start items-start gap-2.5 flex">
+                            <img class=" rounded-xl object-cover" src="assets/about1.jpg" alt="about Us image" />
+                        </div>
+                        <img class="sm:ml-0 ml-auto rounded-xl object-cover" src="assets/about2.jpg"
+                            alt="about Us image" />
+                    </div>
+                    <div class="w-full flex-col justify-center lg:items-start items-center gap-10 inline-flex">
+                        <div class="w-full flex-col justify-center items-start gap-8 flex">
+                            <div class="w-full flex-col justify-start lg:items-start items-center gap-3 flex">
+                                <h2
+                                    class="text-white text-4xl font-bold font-manrope leading-normal lg:text-start text-center">
+                                    We Provide you Customized Fitness Care</h2>
+                                <p
+                                    class="text-gray-500 text-base font-normal leading-relaxed lg:text-start text-center">
+                                    Customized fitness programs are workouts that have been specifically designed to
+                                    meet the individual needs of an individual. This means there is consideration of
+                                    age, gender, past injuries, and current health status to create a sustainable
+                                    workout plan.</p>
+                            </div>
+                            <div
+                                class="w-full lg:justify-start justify-center items-center sm:gap-10 gap-5 inline-flex">
+                                <div class="flex-col justify-start items-start inline-flex">
+                                    <h3 class="text-white text-4xl font-bold font-manrope leading-normal">15+</h3>
+                                    <h6 class="text-gray-500 text-base font-normal leading-relaxed">Years of Experience
+                                    </h6>
+                                </div>
+                                <div class="flex-col justify-start items-start inline-flex">
+                                    <h4 class="text-white text-4xl font-bold font-manrope leading-normal">1205+</h4>
+                                    <h6 class="text-gray-500 text-base font-normal leading-relaxed">Members
+                                    </h6>
+                                </div>
+                                <div class="flex-col justify-start items-start inline-flex">
+                                    <h4 class="text-white text-4xl font-bold font-manrope leading-normal">1205+</h4>
+                                    <h6 class="text-gray-500 text-base font-normal leading-relaxed">Happy Members</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="sm:w-fit w-full px-3.5 py-2 bg-orange-400 hover:bg-orange-800 transition-all duration-700 ease-in-out rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] justify-center items-center flex">
+                            <span class="px-1.5 text-white text-sm font-medium leading-6">Reach Us</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!-- Features section starts from here -->
+        <div id="features" class="h-full min-h-screen w-full bg-gray-800 pt-12 p-4">
+            <div class="w-full flex-col justify-start py-10 items-center gap-3 flex">
+                <h2 class="text-white text-4xl font-bold font-manrope leading-normal lg:text-start text-center">
+                    Features We Offer</h2>
+
+            </div>
+
+            <div class="grid gap-14 md:grid-cols-3 md:gap-5">
+                <div class="rounded-xl bg-black p-6 text-center shadow-xl">
+                    <div
+                        class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full bg-teal-400 shadow-lg shadow-teal-500/40">
+                        <svg viewBox="0 0 33 46" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-white">
+                            <path
+                                d="M24.75 23H8.25V28.75H24.75V23ZM32.3984 9.43359L23.9852 0.628906C23.5984 0.224609 23.0742 0 22.5242 0H22V11.5H33V10.952C33 10.3859 32.7852 9.83789 32.3984 9.43359ZM19.25 12.2188V0H2.0625C0.919531 0 0 0.961328 0 2.15625V43.8438C0 45.0387 0.919531 46 2.0625 46H30.9375C32.0805 46 33 45.0387 33 43.8438V14.375H21.3125C20.1781 14.375 19.25 13.4047 19.25 12.2188ZM5.5 6.46875C5.5 6.07164 5.80766 5.75 6.1875 5.75H13.0625C13.4423 5.75 13.75 6.07164 13.75 6.46875V7.90625C13.75 8.30336 13.4423 8.625 13.0625 8.625H6.1875C5.80766 8.625 5.5 8.30336 5.5 7.90625V6.46875ZM5.5 12.2188C5.5 11.8216 5.80766 11.5 6.1875 11.5H13.0625C13.4423 11.5 13.75 11.8216 13.75 12.2188V13.6562C13.75 14.0534 13.4423 14.375 13.0625 14.375H6.1875C5.80766 14.375 5.5 14.0534 5.5 13.6562V12.2188ZM27.5 39.5312C27.5 39.9284 27.1923 40.25 26.8125 40.25H19.9375C19.5577 40.25 19.25 39.9284 19.25 39.5312V38.0938C19.25 37.6966 19.5577 37.375 19.9375 37.375H26.8125C27.1923 37.375 27.5 37.6966 27.5 38.0938V39.5312ZM27.5 21.5625V30.1875C27.5 30.9817 26.8847 31.625 26.125 31.625H6.875C6.11531 31.625 5.5 30.9817 5.5 30.1875V21.5625C5.5 20.7683 6.11531 20.125 6.875 20.125H26.125C26.8847 20.125 27.5 20.7683 27.5 21.5625Z"
+                                fill="white"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-white mb-3 text-xl font-medium lg:px-14">CERTIFICATION</h1>
+                    <p class="px-4 text-gray-500">We offer fitness certification, a qualification that shows you have
+                        the skills to work as a fitness trainer. It can help you get a job or start your own fitness
+                        center.</p>
+                </div>
+                <div data-aos-delay="150" class="rounded-xl bg-black p-6 text-center shadow-xl">
+                    <div
+                        class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-rose-500 shadow-rose-500/40">
+                        <svg viewBox=" 0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-white">
+                            <path
+                                d="M12 0C11.0532 0 10.2857 0.767511 10.2857 1.71432V5.14285H13.7142V1.71432C13.7142 0.767511 12.9467 0 12 0Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M36 0C35.0532 0 34.2856 0.767511 34.2856 1.71432V5.14285H37.7142V1.71432C37.7143 0.767511 36.9468 0 36 0Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M42.8571 5.14282H37.7143V12C37.7143 12.9468 36.9468 13.7143 36 13.7143C35.0532 13.7143 34.2857 12.9468 34.2857 12V5.14282H13.7142V12C13.7142 12.9468 12.9467 13.7143 11.9999 13.7143C11.0531 13.7143 10.2856 12.9468 10.2856 12V5.14282H5.14285C2.30253 5.14282 0 7.44535 0 10.2857V42.8571C0 45.6974 2.30253 48 5.14285 48H42.8571C45.6975 48 48 45.6974 48 42.8571V10.2857C48 7.44535 45.6975 5.14282 42.8571 5.14282ZM44.5714 42.8571C44.5714 43.8039 43.8039 44.5714 42.857 44.5714H5.14285C4.19605 44.5714 3.42854 43.8039 3.42854 42.8571V20.5714H44.5714V42.8571Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M13.7142 23.9999H10.2857C9.33889 23.9999 8.57138 24.7674 8.57138 25.7142C8.57138 26.661 9.33889 27.4285 10.2857 27.4285H13.7142C14.661 27.4285 15.4285 26.661 15.4285 25.7142C15.4285 24.7674 14.661 23.9999 13.7142 23.9999Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M25.7143 23.9999H22.2857C21.3389 23.9999 20.5714 24.7674 20.5714 25.7142C20.5714 26.661 21.3389 27.4285 22.2857 27.4285H25.7143C26.6611 27.4285 27.4286 26.661 27.4286 25.7142C27.4286 24.7674 26.6611 23.9999 25.7143 23.9999Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M37.7143 23.9999H34.2857C33.3389 23.9999 32.5714 24.7674 32.5714 25.7142C32.5714 26.661 33.3389 27.4285 34.2857 27.4285H37.7143C38.6611 27.4285 39.4286 26.661 39.4286 25.7142C39.4286 24.7674 38.661 23.9999 37.7143 23.9999Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M13.7142 30.8571H10.2857C9.33889 30.8571 8.57138 31.6246 8.57138 32.5714C8.57138 33.5182 9.33889 34.2857 10.2857 34.2857H13.7142C14.661 34.2857 15.4285 33.5182 15.4285 32.5714C15.4285 31.6246 14.661 30.8571 13.7142 30.8571Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M25.7143 30.8571H22.2857C21.3389 30.8571 20.5714 31.6246 20.5714 32.5714C20.5714 33.5182 21.3389 34.2857 22.2857 34.2857H25.7143C26.6611 34.2857 27.4286 33.5182 27.4286 32.5714C27.4286 31.6246 26.6611 30.8571 25.7143 30.8571Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M37.7143 30.8571H34.2857C33.3389 30.8571 32.5714 31.6246 32.5714 32.5714C32.5714 33.5182 33.3389 34.2857 34.2857 34.2857H37.7143C38.6611 34.2857 39.4286 33.5182 39.4286 32.5714C39.4285 31.6246 38.661 30.8571 37.7143 30.8571Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M13.7142 37.7142H10.2857C9.33889 37.7142 8.57138 38.4817 8.57138 39.4286C8.57138 40.3754 9.33889 41.1428 10.2857 41.1428H13.7142C14.661 41.1428 15.4285 40.3753 15.4285 39.4284C15.4285 38.4816 14.661 37.7142 13.7142 37.7142Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M25.7143 37.7142H22.2857C21.3389 37.7142 20.5714 38.4817 20.5714 39.4285C20.5714 40.3754 21.3389 41.1429 22.2857 41.1429H25.7143C26.6611 41.1429 27.4286 40.3754 27.4286 39.4285C27.4286 38.4817 26.6611 37.7142 25.7143 37.7142Z"
+                                fill="#F5F5FC"></path>
+                            <path
+                                d="M37.7143 37.7142H34.2857C33.3389 37.7142 32.5714 38.4817 32.5714 39.4285C32.5714 40.3754 33.3389 41.1429 34.2857 41.1429H37.7143C38.6611 41.1429 39.4286 40.3754 39.4286 39.4285C39.4286 38.4817 38.661 37.7142 37.7143 37.7142Z"
+                                fill="#F5F5FC"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-white mb-3 text-xl font-medium lg:px-14 ">SCHEDULE AND ROUTINES</h1>
+                    <p class="px-4 text-gray-500">We provide fitness schedule, a plan for physical exercise sessions. It
+                        can include a variety of activities, such as walking, interval training, and resistance
+                        training.</p>
+                </div>
+                <div data-aos-delay="300" class="rounded-xl bg-black p-6 text-center shadow-xl">
+                    <div
+                        class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-sky-500 shadow-sky-500/40">
+                        <svg viewBox="0 0 55 44" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-white">
+                            <path
+                                d="M8.25 19.25C11.2836 19.25 13.75 16.7836 13.75 13.75C13.75 10.7164 11.2836 8.25 8.25 8.25C5.21641 8.25 2.75 10.7164 2.75 13.75C2.75 16.7836 5.21641 19.25 8.25 19.25ZM46.75 19.25C49.7836 19.25 52.25 16.7836 52.25 13.75C52.25 10.7164 49.7836 8.25 46.75 8.25C43.7164 8.25 41.25 10.7164 41.25 13.75C41.25 16.7836 43.7164 19.25 46.75 19.25ZM49.5 22H44C42.4875 22 41.1211 22.6102 40.1242 23.5984C43.5875 25.4977 46.0453 28.9266 46.5781 33H52.25C53.7711 33 55 31.7711 55 30.25V27.5C55 24.4664 52.5336 22 49.5 22ZM27.5 22C32.8195 22 37.125 17.6945 37.125 12.375C37.125 7.05547 32.8195 2.75 27.5 2.75C22.1805 2.75 17.875 7.05547 17.875 12.375C17.875 17.6945 22.1805 22 27.5 22ZM34.1 24.75H33.3867C31.5992 25.6094 29.6141 26.125 27.5 26.125C25.3859 26.125 23.4094 25.6094 21.6133 24.75H20.9C15.4344 24.75 11 29.1844 11 34.65V37.125C11 39.4023 12.8477 41.25 15.125 41.25H39.875C42.1523 41.25 44 39.4023 44 37.125V34.65C44 29.1844 39.5656 24.75 34.1 24.75ZM14.8758 23.5984C13.8789 22.6102 12.5125 22 11 22H5.5C2.46641 22 0 24.4664 0 27.5V30.25C0 31.7711 1.22891 33 2.75 33H8.41328C8.95469 28.9266 11.4125 25.4977 14.8758 23.5984Z"
+                                fill="white"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-white pt-3 text-xl font-medium lg:h-14 lg:px-14">EXPERIENCED TRAINER</h1>
+                    <p class="px-4 text-gray-500">We have an experienced trainer, a professional who has a lot of
+                        training experience and can teach a variety of topics.</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Membership section -->
+        <section id="membership" class="py-24">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center">
+                    <h2 class="font-manrope text-5xl text-center font-bold text-white mb-4">
+                        Our pricing plans
+                    </h2>
+                    <p class="text-gray-500 text-xl text-center leading-6 mb-12">
+                        7 Days free trial. No payment required.
+                    </p>
+
+
+                    <div class="tabs">
+                        <div class="flex justify-center items-center bg-gray-100 rounded-full p-1.5 max-w-sm mx-auto">
+                            <a href="javascript:void(0)"
+                                class="inline-block w-1/2 text-center transition-all duration-500 rounded-full text-gray-400 font-semibold py-3 px-3 lg:px-11 hover:text-orange-600 tab-active:bg-orange-600 tab-active:rounded-full tab-active:text-white tablink whitespace-nowrap active"
+                                data-tab="tabs-with-background-1" role="tab">
+                                Bill Yearly
+                            </a>
+                            <a href="javascript:void(0)"
+                                class="inline-block w-1/2 text-center transition-all duration-500 rounded-full text-gray-400 font-semibold py-3 px-3 lg:px-11 hover:text-orange-600 tab-active:bg-orange-600 tab-active:rounded-full tab-active:text-white tablink whitespace-nowrap"
+                                data-tab="tabs-with-background-2" role="tab">
+                                Bill Monthly
+                            </a>
+                        </div>
+
+                        <div id="tabs-with-background-1" role="tabpanel" aria-labelledby="tabs-with-background-item-1"
+                            class="tabcontent mt-12">
+                            <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-8 lg:space-y-0">
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-300 p-6 xl:p-12 hover:border-orange-600">
+                                    <h3 class="font-manrope text-white text-2xl font-bold mb-6">Starter</h3>
+                                    <div class="mb-20 flex flex-col">
+                                        <span class="font-manrope text-6xl text-white font-semibold mb-2">NRS.
+                                            1999</span>
+                                        <span class="text-xl text-gray-400">Per year</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="py-2.5 px-5 bg-orange-50 shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto group-hover:bg-orange-600 group-hover:text-white">Purchase
+                                        Plan</a>
+
+                                </div>
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-500 p-6 xl:p-12 bg-gradient-to-r from-orange-600 to-violet-600 hover:before:opacity-100 before:contents[' '] before:absolute before:bg-orange-800 before:w-full before:h-full before:top-0 before:left-0 before:rounded-2xl before:opacity-0 before:transition-all before:duration-500 before:z-0">
+                                    <h3
+                                        class="relative flex items-center justify-center font-manrope text-2xl font-bold mb-6 text-white">
+                                        Premium
+                                        <span
+                                            class="h-6 px-3 relative rounded-full border border-solid border-gray-100 text-sm ml-4">Popular</span>
+                                    </h3>
+                                    <div class="mb-20 flex flex-col relative">
+                                        <span class="font-manrope text-6xl font-semibold mb-2 text-white">NRS.
+                                            4999</span>
+                                        <span class="text-xl text-gray-300">Per year</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="relative py-2.5 px-5 bg-white shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto">Purchase
+                                        Plan</a>
+
+                                </div>
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-300 p-8 xl:p-12 hover:border-orange-600">
+                                    <h3 class="font-manrope text-2xl text-white font-bold mb-6">Premium plus</h3>
+                                    <div class="mb-20 flex flex-col">
+                                        <span class="font-manrope text-6xl text-white font-semibold mb-2">NRS.
+                                            9999</span>
+                                        <span class="text-xl text-gray-400">Per year</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="py-2.5 px-5 bg-orange-50 shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto group-hover:bg-orange-600 group-hover:text-white">Purchase
+                                        Plan</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabs-with-background-2" class="tabcontent mt-12" role="tabpanel"
+                            aria-labelledby="tabs-with-background-item-2" style="display: none">
+                            <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-8 lg:space-y-0">
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-300 p-6 xl:p-12 hover:border-orange-600">
+                                    <h3 class="font-manrope text-2xl font-bold mb-6">Free</h3>
+                                    <div class="mb-20 flex flex-col">
+                                        <span class="font-manrope text-6xl font-semibold mb-2">$0</span>
+                                        <span class="text-xl text-gray-400">Lifetime</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="py-2.5 px-5 bg-orange-50 shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto group-hover:bg-orange-600 group-hover:text-white">Purchase
+                                        Plan</a>
+
+                                </div>
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-500 p-6 xl:p-12 bg-gradient-to-r from-orange-600 to-violet-600 hover:before:opacity-100 before:contents[' '] before:absolute before:bg-orange-800 before:w-full before:h-full before:top-0 before:left-0 before:rounded-2xl before:opacity-0 before:transition-all before:duration-500 before:z-0">
+                                    <h3
+                                        class="relative flex items-center justify-center font-manrope text-2xl font-bold mb-6 text-white">
+                                        Advanced
+                                        <span
+                                            class="h-6 px-3 relative rounded-full border border-solid border-gray-100 text-sm ml-4">Popular</span>
+                                    </h3>
+                                    <div class="mb-20 flex flex-col relative">
+                                        <span class="font-manrope text-6xl font-semibold mb-2 text-white">$39</span>
+                                        <span class="text-xl text-gray-300">Per Month</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="relative py-2.5 px-5 bg-white shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto">Purchase
+                                        Plan</a>
+
+                                </div>
+
+                                <div
+                                    class="group relative flex flex-col mx-auto w-full max-w-sm text-gray-900 rounded-2xl border border-solid border-gray-300 text-center transition-all duration-300 p-8 xl:p-12 hover:border-orange-600">
+                                    <h3 class="font-manrope text-2xl font-bold mb-6">Team</h3>
+                                    <div class="mb-20 flex flex-col">
+                                        <span class="font-manrope text-6xl font-semibold mb-2">$49</span>
+                                        <span class="text-xl text-gray-400">Per Month</span>
+                                    </div>
+                                    <a href="javascript:;"
+                                        class="py-2.5 px-5 bg-orange-50 shadow-sm rounded-full transition-all duration-500 text-base text-orange-600 font-semibold text-center w-fit mx-auto group-hover:bg-orange-600 group-hover:text-white">Purchase
+                                        Plan</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Contact Us Start from here -->
+
+
+
+                    <div id="contact" class="p-4 mx-auto max-w-xl bg-gray-900 font-[sans-serif] rounded-md mt-40">
+                        <h1 class="text-3xl text-orange-400 font-extrabold text-center">Contact us</h1>
+                        <form class="mt-8 space-y-4">
+                            <input type='text' placeholder='Name'
+                                class="w-full rounded-md py-3 px-4 text-white bg-gray-700 focus:bg-transparent text-sm outline-orange-400" />
+                            <input type='email' placeholder='Email'
+                                class="w-full rounded-md py-3 px-4 text-white bg-gray-700 focus:bg-transparent text-sm outline-orange-400" />
+                            <input type='text' placeholder='Subject'
+                                class="w-full rounded-md py-3 px-4 text-white bg-gray-700 focus:bg-transparent text-sm outline-orange-400" />
+                            <textarea placeholder='Message' rows="6"
+                                class="w-full rounded-md px-4 text-white bg-gray-700 focus:bg-transparent text-sm pt-3 outline-orange-400"></textarea>
+                            <button type='button'
+                                class="text-white bg-orange-400 hover:bg-orange-500 tracking-wide rounded-md text-sm px-4 py-3 w-full">Send</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <footer class="w-full bg-gray-900">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+            <div class="py-7 border-t border-gray-700 ">
+                <div
+                    class="flex items-center justify-center flex-col lg:space-y-0 space-y-8 lg:justify-between lg:flex-row">
+                    <a href="#" class="flex justify-center ">
+                        <img class="h-10" src="assets/logo.png" alt="">
+                    </a>
+                    <span class="text-gray-400  block">©
+                        <a href="#">Pashupati Fitness</a> 2024, All rights reserved.</span>
+                    <div class="flex mt-4 space-x-4 sm:justify-center sm:mt-0 ">
+                        <a href="javascript:;"
+                            class="w-9 h-9 rounded-full border border-gray-700 flex justify-center items-center hover:border-orange-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none">
+                                <path id="Vector"
+                                    d="M11.3214 8.93666L16.4919 3.05566H15.2667L10.7772 8.16205L7.1914 3.05566H3.05566L8.47803 10.7774L3.05566 16.9446H4.28097L9.022 11.552L12.8088 16.9446H16.9446L11.3211 8.93666H11.3214ZM9.64322 10.8455L9.09382 10.0765L4.72246 3.95821H6.60445L10.1322 8.8959L10.6816 9.66481L15.2672 16.083H13.3852L9.64322 10.8458V10.8455Z"
+                                    fill="white" />
+                            </svg>
+
+                        </a>
+                        <a href="javascript:;"
+                            class="w-9 h-9 rounded-full border border-gray-700 flex justify-center items-center hover:border-orange-400">
+                            <svg class="w-[1.25rem] h-[1.125rem] text-white" viewBox="0 0 15 15" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4.70975 7.93663C4.70975 6.65824 5.76102 5.62163 7.0582 5.62163C8.35537 5.62163 9.40721 6.65824 9.40721 7.93663C9.40721 9.21502 8.35537 10.2516 7.0582 10.2516C5.76102 10.2516 4.70975 9.21502 4.70975 7.93663ZM3.43991 7.93663C3.43991 9.90608 5.05982 11.5025 7.0582 11.5025C9.05658 11.5025 10.6765 9.90608 10.6765 7.93663C10.6765 5.96719 9.05658 4.37074 7.0582 4.37074C5.05982 4.37074 3.43991 5.96719 3.43991 7.93663ZM9.97414 4.22935C9.97408 4.39417 10.0236 4.55531 10.1165 4.69239C10.2093 4.82946 10.3413 4.93633 10.4958 4.99946C10.6503 5.06259 10.8203 5.07916 10.9844 5.04707C11.1484 5.01498 11.2991 4.93568 11.4174 4.81918C11.5357 4.70268 11.6163 4.55423 11.649 4.39259C11.6817 4.23095 11.665 4.06339 11.6011 3.91109C11.5371 3.7588 11.4288 3.6286 11.2898 3.53698C11.1508 3.44536 10.9873 3.39642 10.8201 3.39635H10.8197C10.5955 3.39646 10.3806 3.48424 10.222 3.64043C10.0635 3.79661 9.97434 4.00843 9.97414 4.22935ZM4.21142 13.5892C3.52442 13.5584 3.15101 13.4456 2.90286 13.3504C2.57387 13.2241 2.33914 13.0738 2.09235 12.8309C1.84555 12.588 1.69278 12.3569 1.56527 12.0327C1.46854 11.7882 1.3541 11.4201 1.32287 10.7431C1.28871 10.0111 1.28189 9.79119 1.28189 7.93669C1.28189 6.08219 1.28927 5.86291 1.32287 5.1303C1.35416 4.45324 1.46944 4.08585 1.56527 3.84069C1.69335 3.51647 1.84589 3.28513 2.09235 3.04191C2.3388 2.79869 2.57331 2.64813 2.90286 2.52247C3.1509 2.42713 3.52442 2.31435 4.21142 2.28358C4.95417 2.24991 5.17729 2.24319 7.0582 2.24319C8.9391 2.24319 9.16244 2.25047 9.90582 2.28358C10.5928 2.31441 10.9656 2.42802 11.2144 2.52247C11.5434 2.64813 11.7781 2.79902 12.0249 3.04191C12.2717 3.2848 12.4239 3.51647 12.552 3.84069C12.6487 4.08513 12.7631 4.45324 12.7944 5.1303C12.8285 5.86291 12.8354 6.08219 12.8354 7.93669C12.8354 9.79119 12.8285 10.0105 12.7944 10.7431C12.7631 11.4201 12.6481 11.7881 12.552 12.0327C12.4239 12.3569 12.2714 12.5882 12.0249 12.8309C11.7784 13.0736 11.5434 13.2241 11.2144 13.3504C10.9663 13.4457 10.5928 13.5585 9.90582 13.5892C9.16306 13.6229 8.93994 13.6296 7.0582 13.6296C5.17645 13.6296 4.95395 13.6229 4.21142 13.5892ZM4.15307 1.03424C3.40294 1.06791 2.89035 1.18513 2.4427 1.3568C1.9791 1.53408 1.58663 1.77191 1.19446 2.1578C0.802277 2.54369 0.56157 2.93108 0.381687 3.38797C0.207498 3.82941 0.0885535 4.3343 0.0543922 5.07358C0.0196672 5.81402 0.0117188 6.05074 0.0117188 7.93663C0.0117188 9.82252 0.0196672 10.0592 0.0543922 10.7997C0.0885535 11.539 0.207498 12.0439 0.381687 12.4853C0.56157 12.9419 0.802334 13.3297 1.19446 13.7155C1.58658 14.1012 1.9791 14.3387 2.4427 14.5165C2.89119 14.6881 3.40294 14.8054 4.15307 14.839C4.90479 14.8727 5.1446 14.8811 7.0582 14.8811C8.9718 14.8811 9.212 14.8732 9.96332 14.839C10.7135 14.8054 11.2258 14.6881 11.6737 14.5165C12.137 14.3387 12.5298 14.1014 12.9219 13.7155C13.3141 13.3296 13.5543 12.9419 13.7347 12.4853C13.9089 12.0439 14.0284 11.539 14.062 10.7997C14.0962 10.0587 14.1041 9.82252 14.1041 7.93663C14.1041 6.05074 14.0962 5.81402 14.062 5.07358C14.0278 4.33424 13.9089 3.82913 13.7347 3.38797C13.5543 2.93135 13.3135 2.5443 12.9219 2.1578C12.5304 1.7713 12.137 1.53408 11.6743 1.3568C11.2258 1.18513 10.7135 1.06735 9.96388 1.03424C9.21256 1.00058 8.97236 0.992188 7.05876 0.992188C5.14516 0.992188 4.90479 1.00002 4.15307 1.03424Z"
+                                    fill="currentColor" />
+                            </svg>
+
+                        </a>
+                        <a href="javascript:;"
+                            class="w-9 h-9 rounded-full border border-gray-700 flex justify-center items-center hover:border-orange-400">
+                            <svg class="w-[1rem] h-[1rem] text-white" viewBox="0 0 13 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M2.8794 11.5527V3.86835H0.318893V11.5527H2.87967H2.8794ZM1.59968 2.81936C2.4924 2.81936 3.04817 2.2293 3.04817 1.49188C3.03146 0.737661 2.4924 0.164062 1.61666 0.164062C0.74032 0.164062 0.167969 0.737661 0.167969 1.49181C0.167969 2.22923 0.723543 2.8193 1.5829 2.8193H1.59948L1.59968 2.81936ZM4.29668 11.5527H6.85698V7.26187C6.85698 7.03251 6.87369 6.80255 6.94134 6.63873C7.12635 6.17968 7.54764 5.70449 8.25514 5.70449C9.18141 5.70449 9.55217 6.4091 9.55217 7.44222V11.5527H12.1124V7.14672C12.1124 4.78652 10.8494 3.68819 9.16483 3.68819C7.78372 3.68819 7.17715 4.45822 6.84014 4.98267H6.85718V3.86862H4.29681C4.33023 4.5895 4.29661 11.553 4.29661 11.553L4.29668 11.5527Z"
+                                    fill="currentColor" />
+                            </svg>
+
+                        </a>
+                        <a href="javascript:;"
+                            class="w-9 h-9 rounded-full border border-gray-700 flex justify-center items-center hover:border-orange-400">
+                            <svg class="w-[1.25rem] h-[0.875rem] text-white" viewBox="0 0 16 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M13.9346 1.13529C14.5684 1.30645 15.0665 1.80588 15.2349 2.43896C15.5413 3.58788 15.5413 5.98654 15.5413 5.98654C15.5413 5.98654 15.5413 8.3852 15.2349 9.53412C15.0642 10.1695 14.5661 10.669 13.9346 10.8378C12.7886 11.1449 8.19058 11.1449 8.19058 11.1449C8.19058 11.1449 3.59491 11.1449 2.44657 10.8378C1.81277 10.6666 1.31461 10.1672 1.14622 9.53412C0.839844 8.3852 0.839844 5.98654 0.839844 5.98654C0.839844 5.98654 0.839844 3.58788 1.14622 2.43896C1.31695 1.80353 1.81511 1.30411 2.44657 1.13529C3.59491 0.828125 8.19058 0.828125 8.19058 0.828125C8.19058 0.828125 12.7886 0.828125 13.9346 1.13529ZM10.541 5.98654L6.72178 8.19762V3.77545L10.541 5.98654Z"
+                                    fill="currentColor" />
+                            </svg>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Linking javascript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
