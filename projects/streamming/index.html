@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Receiver</title>
+   <style>
+     body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f2f2f2;
+}
 
+.container {
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+input {
+    padding: 10px;
+    width: 300px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.video-container {
+    margin-top: 20px;
+}
+
+video {
+    width: 100%;
+    max-width: 800px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+   </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Stream Receiver</h1>
+    <input type="text" id="streamUrl" placeholder="Enter Stream URL (e.g. HLS or MP4 URL)" />
+    <button id="loadStream">Load Stream</button>
+    
+    <div class="video-container">
+        <video id="videoPlayer" controls>
+            <!-- No initial source -->
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+<script>
+  document.getElementById('loadStream').addEventListener('click', function() {
+    const streamUrl = document.getElementById('streamUrl').value;
+    
+    if (streamUrl) {
+        const videoElement = document.getElementById('videoPlayer');
+        
+        // Set the source for the video
+        videoElement.src = streamUrl;
+        videoElement.load();  // Load the new video source
+        videoElement.play();  // Play it immediately if possible
+    } else {
+        alert("Please enter a valid stream URL.");
+    }
+});
+
+</script>
+</body>
+</html>
