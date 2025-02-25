@@ -3,11 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to my portfolio</title>
+    <title>Space Gateway Loader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        .space-text { font-family: 'Space Grotesk', sans-serif; text-shadow: 0 0 15px rgba(98, 0, 234, 0.5); }
+        .gateway-loader { background: linear-gradient(45deg, #0a0a2e 0%, #1a1a4a 100%); }
+    </style>
 </head>
-<body>
+<body class="m-0 overflow-hidden">
+    <div id="three-container" class="fixed inset-0 z-0"></div>
+    <div class="gateway-loader relative z-10 flex flex-col items-center justify-center h-screen w-full">
+        <div class="relative w-64 h-64 mb-8">
+            <div class="absolute inset-0 border-4 border-purple-500/20 rounded-full animate-pulse"></div>
+            <div class="absolute inset-0 border-4 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span id="loading-percent" class="space-text text-3xl text-purple-400 font-bold">0%</span>
+            </div>
+        </div>
+        <h1 id="status-text" class="space-text text-4xl text-purple-300 font-bold animate-pulse">
+            Preparing Hyperdrive...
+        </h1>
+        <div class="relative h-2 w-96 bg-purple-900/50 rounded-full overflow-hidden mt-4">
+            <div id="progress-bar" class="absolute h-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all" style="width: 0%"></div>
+        </div>
+    </div>
     <script>
-        window.location.href = "https://nishchalacharya.com.np/portfolio"
+        let progress = 0;
+        function updateProgress() {
+            if (progress <= 100) {
+                document.getElementById("loading-percent").innerText = progress + "%";
+                document.getElementById("progress-bar").style.width = progress + "%";
+                progress++;
+                setTimeout(updateProgress, 50);
+            } else {
+                window.location.href = 'https://nishchalacharya.com.np/portfolio';
+            }
+        }
+        updateProgress();
     </script>
 </body>
 </html>
+
+
+
