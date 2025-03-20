@@ -3,49 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Gateway Loader</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta http-equiv="refresh" content="3; url=YOUR_LINKEDIN_URL">
+    <title>Redirecting...</title>
+    <script async src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .space-text { font-family: 'Space Grotesk', sans-serif; text-shadow: 0 0 15px rgba(98, 0, 234, 0.5); }
-        .gateway-loader { background: linear-gradient(45deg, #0a0a2e 0%, #1a1a4a 100%); }
-    </style>
-</head>
-<body class="m-0 overflow-hidden">
-    <div id="three-container" class="fixed inset-0 z-0"></div>
-    <div class="gateway-loader relative z-10 flex flex-col items-center justify-center h-screen w-full">
-        <div class="relative w-64 h-64 mb-8">
-            <div class="absolute inset-0 border-4 border-purple-500/20 rounded-full animate-pulse"></div>
-            <div class="absolute inset-0 border-4 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <img src="data:image/png;base64,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" alt="Logo" class="w-24 h-24">
-            </div>
-        </div>
-        <h1 id="status-text" class="space-text text-4xl text-purple-300 font-bold animate-pulse">
-            Redirecting to X (Twitter) Profile
-        </h1>
-        <div class="relative h-2 w-96 bg-purple-900/50 rounded-full overflow-hidden mt-4">
-            <div id="progress-bar" class="absolute h-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all" style="width: 0%"></div>
-        </div>
-        <span id="loading-percent" class="space-text text-2xl text-purple-400 font-bold mt-2">0%</span>
-    </div>
-    <script>
-        let progress = 0;
-        function updateProgress() {
-            if (progress <= 100) {
-                document.getElementById("loading-percent").innerText = progress + "%";
-                document.getElementById("progress-bar").style.width = progress + "%";
-                progress++;
-                setTimeout(updateProgress, 30);
-            } else {
-                window.location.href = 'https://x.com/nishchal_acc';
+        :root {
+            --primary-color: #0A66C2;
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #ffffff;
+                --primary-color: #4CA8F5;
             }
         }
-        updateProgress();
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-wrapper {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .loader {
+            width: 200px;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 2px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            transform-origin: left;
+            animation: load 3s linear forwards;
+        }
+
+        .status-text {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes load {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div class="content">
+        <div class="icon-wrapper">
+            <i class="fab fa-linkedin"></i>
+        </div>
+
+        <div class="loader">
+            <div class="loader-bar"></div>
+        </div>
+
+        <p class="status-text">Redirecting to professional profile...</p>
+    </div>
+
+    <script>
+        // Three.js Fluid Waves
+        let scene, camera, renderer, plane, material;
+        
+        function initFluidWaves() {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Wave geometry
+            const geometry = new THREE.PlaneGeometry(30, 30, 128, 128);
+            material = new THREE.MeshPhongMaterial({
+                color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--primary-color').trim(),
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15
+            });
+
+            plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -Math.PI / 2;
+            scene.add(plane);
+
+            camera.position.z = 20;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            animateWaves();
+        }
+
+        function animateWaves() {
+            requestAnimationFrame(animateWaves);
+            
+            const time = Date.now() * 0.001;
+            const positions = plane.geometry.attributes.position.array;
+
+            for(let i = 0; i < positions.length; i += 3) {
+                positions[i + 2] = Math.sin(positions[i] * 1.5 + time * 2) * 0.8 +
+                                   Math.cos(positions[i + 1] * 1.5 + time * 1.5) * 0.8;
+            }
+
+            plane.geometry.attributes.position.needsUpdate = true;
+            renderer.render(scene, camera);
+        }
+
+        // Initialize and handle resize
+        window.addEventListener('load', initFluidWaves);
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Automatic redirect
+        setTimeout(() => {
+            window.location.href = 'https://x.com/@nishchal_acc';
+        }, 3000);
     </script>
 </body>
 </html>
