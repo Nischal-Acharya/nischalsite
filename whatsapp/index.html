@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3; url=YOUR_LINKEDIN_URL">
+    <title>Redirecting...</title>
+    <script async src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3ebc4e;
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #ffffff;
+                --primary-color: #4CA8F5;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-wrapper {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .loader {
+            width: 200px;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 2px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            transform-origin: left;
+            animation: load 3s linear forwards;
+        }
+
+        .status-text {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes load {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div class="content">
+        <div class="icon-wrapper">
+            <i class="fa-brands fa-whatsapp"></i>
+        </div>
+
+        <div class="loader">
+            <div class="loader-bar"></div>
+        </div>
+
+        <p class="status-text">Redirecting to professional profile...</p>
+    </div>
+
+    <script>
+        // Three.js Fluid Waves
+        let scene, camera, renderer, plane, material;
+        
+        function initFluidWaves() {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Wave geometry
+            const geometry = new THREE.PlaneGeometry(30, 30, 128, 128);
+            material = new THREE.MeshPhongMaterial({
+                color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--primary-color').trim(),
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15
+            });
+
+            plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -Math.PI / 2;
+            scene.add(plane);
+
+            camera.position.z = 20;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            animateWaves();
+        }
+
+        function animateWaves() {
+            requestAnimationFrame(animateWaves);
+            
+            const time = Date.now() * 0.001;
+            const positions = plane.geometry.attributes.position.array;
+
+            for(let i = 0; i < positions.length; i += 3) {
+                positions[i + 2] = Math.sin(positions[i] * 1.5 + time * 2) * 0.8 +
+                                   Math.cos(positions[i + 1] * 1.5 + time * 1.5) * 0.8;
+            }
+
+            plane.geometry.attributes.position.needsUpdate = true;
+            renderer.render(scene, camera);
+        }
+
+        // Initialize and handle resize
+        window.addEventListener('load', initFluidWaves);
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Automatic redirect
+        setTimeout(() => {
+            window.location.href = 'https://wa.me/9768808983';
+        }, 3000);
+    </script>
+</body>
+</html>
