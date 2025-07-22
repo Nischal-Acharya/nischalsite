@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waxin | Secure Card Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .logo-icon i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .title {
+            font-size: 32px;
+            color: #2b2d42;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content {
+            display: flex;
+            width: 100%;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card-preview {
+            flex: 1;
+            min-width: 350px;
+            max-width: 450px;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(245, 247, 250, 0.85) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, rgba(245, 247, 250, 0.85) 0%, rgba(230, 235, 245, 0.85) 100%);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-type {
+            font-size: 24px;
+            color: #4361ee;
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd166 0%, #f4a261 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-chip i {
+            color: #5d4037;
+            font-size: 24px;
+        }
+
+        .card-number {
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: #2b2d42;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            color: #2b2d42;
+        }
+
+        .card-holder, .card-expiry {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .card-magnetic {
+            height: 50px;
+            background: #2b2d42;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .card-signature {
+            height: 40px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 10px;
+        }
+
+        .card-cvv {
+            color: #2b2d42;
+            font-weight: 500;
+        }
+
+        .card-logo {
+            position: absolute;
+            right: 25px;
+            bottom: 25px;
+            font-size: 36px;
+            color: #4361ee;
+        }
+
+        .form-container {
+            flex: 1;
+            min-width: 350px;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-title {
+            font-size: 24px;
+            color: #2b2d42;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2b2d42;
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #495057;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            background: white;
+        }
+
+        .form-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .flip-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #4361ee;
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .flip-btn:hover {
+            background: #4361ee;
+            color: white;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.6);
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .security-note i {
+            color: #4caf50;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card-preview, .form-container {
+                max-width: 100%;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img style="height: 40px;" src="logo.png" alt="">
+                </div>
+                <div class="logo-text">Waxin</div>
+            </div>
+            <h1 class="title">Secure Card Integration</h1>
+            <p class="subtitle">Add your debit or credit card details securely to start making payments</p>
+        </div>
+
+        <div class="content">
+            <div class="card-preview">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <button class="flip-btn" onclick="flipCard()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <div class="card-header">
+                            <div class="card-chip">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="card-type">
+                                <i class="fab fa-cc-visa"></i>
+                            </div>
+                        </div>
+                        <div class="card-number" id="previewCardNumber">•••• •••• •••• ••••</div>
+                        <div class="card-details">
+                            <div class="card-holder">
+                                <div class="card-label">Card Holder</div>
+                                <div class="card-value" id="previewCardHolder">FULL NAME</div>
+                            </div>
+                            <div class="card-expiry">
+                                <div class="card-label">Expires</div>
+                                <div class="card-value" id="previewCardExpiry">••/••</div>
+                            </div>
+                        </div>
+                        <div class="card-logo">
+                            <i class="fab fa-cc-mastercard"></i>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <button class="flip-btn" onclick="flipCard()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <div class="card-magnetic"></div>
+                        <div class="card-signature">
+                            <div class="card-cvv" id="previewCardCvv">•••</div>
+                        </div>
+                        <div class="card-logo">
+                            <i class="fab fa-cc-mastercard"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <h2 class="form-title">Card Details</h2>
+                <form id="cardForm">
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            <div class="form-icon">
+                                <i class="far fa-credit-card"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Card Holder</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cardHolder" placeholder="Full Name">
+                            <div class="form-icon">
+                                <i class="far fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Expiry Date</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                                    <div class="form-icon">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">CVV</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cvv" placeholder="•••" maxlength="3">
+                                    <div class="form-icon">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button type="button" class="submit-btn" onclick="submitForm()">Save Card</button>
+                    </div>
+                    
+                    <div class="security-note">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Your card details are securely encrypted</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Flip card function
+        function flipCard() {
+            document.querySelector('.card-inner').classList.toggle('flipped');
+        }
+        
+        // Update card preview
+        function updateCardPreview() {
+            // Card number
+            const cardNumber = document.getElementById('cardNumber').value;
+            if (cardNumber) {
+                document.getElementById('previewCardNumber').textContent = 
+                    cardNumber.replace(/(\d{4})/g, '$1 ').trim();
+            } else {
+                document.getElementById('previewCardNumber').textContent = '•••• •••• •••• ••••';
+            }
+            
+            // Card holder
+            const cardHolder = document.getElementById('cardHolder').value;
+            document.getElementById('previewCardHolder').textContent = 
+                cardHolder || 'FULL NAME';
+            
+            // Expiry date
+            const expiryDate = document.getElementById('expiryDate').value;
+            document.getElementById('previewCardExpiry').textContent = 
+                expiryDate || '••/••';
+            
+            // CVV
+            const cvv = document.getElementById('cvv').value;
+            document.getElementById('previewCardCvv').textContent = 
+                cvv ? '•'.repeat(cvv.length) : '•••';
+        }
+        
+        // Format card number input
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.substring(0, 16);
+            
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formattedValue += ' ';
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+            updateCardPreview();
+        });
+        
+        // Format expiry date input
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.substring(0, 4);
+            
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            }
+            
+            e.target.value = value;
+            updateCardPreview();
+        });
+        
+        // Format CVV input
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.substring(0, 3);
+            e.target.value = value;
+            updateCardPreview();
+            
+            // Flip card to back when entering CVV
+            if (value.length > 0) {
+                document.querySelector('.card-inner').classList.add('flipped');
+            } else {
+                document.querySelector('.card-inner').classList.remove('flipped');
+            }
+        });
+        
+        // Update card holder
+        document.getElementById('cardHolder').addEventListener('input', updateCardPreview);
+        
+        // Submit form
+        function submitForm() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardHolder = document.getElementById('cardHolder').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            // Basic validation
+            if (!cardNumber || cardNumber.length !== 16) {
+                alert('Please enter a valid 16-digit card number');
+                return;
+            }
+            
+            if (!cardHolder) {
+                alert('Please enter card holder name');
+                return;
+            }
+            
+            if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                alert('Please enter a valid expiry date in MM/YY format');
+                return;
+            }
+            
+            if (!cvv || cvv.length !== 3) {
+                alert('Please enter a valid 3-digit CVV');
+                return;
+            }
+            
+            alert('Card added successfully!\n\nCard ending with: ' + cardNumber.substr(12));
+        }
+        
+        // Initialize
+        updateCardPreview();
+    </script>
+</body>
+</html>
