@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Coming Soon | Wanxin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f0ff 0%, #f8f9ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            /* overflow: hidden; */
+        }
+
+        /* Bubble Texture Background */
+        .bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(106, 17, 203, 0.05);
+            box-shadow: inset 0 0 15px rgba(37, 117, 252, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 64px;
+            /* margin-bottom: 20px; */
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .app-name {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 18px;
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin: 40px 0;
+        }
+
+        .construction-icon {
+            font-size: 100px;
+            color: #ff9800;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .message {
+            font-size: 20px;
+            color: #495057;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+        }
+
+        .countdown-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .countdown-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 12px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 10px;
+            animation: progress 2s ease-in-out;
+        }
+
+        @keyframes progress {
+            0% { width: 0; }
+            100% { width: 65%; }
+        }
+
+        /* Features List */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: #f8f9ff;
+            border-radius: 16px;
+            padding: 25px;
+            width: 220px;
+            border: 1px solid #eaeef5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(37, 117, 252, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(37, 117, 252, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #2575fc;
+            color: #2575fc;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(37, 117, 252, 0.05);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .app-version {
+            margin-top: 10px;
+            font-weight: 500;
+            color: #2575fc;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 32px;
+            }
+            
+            .message {
+                font-size: 18px;
+            }
+            
+            .countdown {
+                gap: 10px;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .countdown-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bubble texture background -->
+    <div class="bubbles" id="bubbles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img style="height: 70px;" src="logo.png" alt="">
+            </div>
+            <h1 class="app-name">Wanxin</h1>
+            <p class="tagline">Connecting your world seamlessly</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="construction-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            
+            <h2 class="title">Feature Under Development</h2>
+            
+            <p class="message">
+                We're working hard to bring you this exciting new feature! Our team is putting the 
+                finishing touches to ensure the best possible experience for you.
+            </p>
+            
+           
+            
+            <div class="btn-container">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="#" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Notify Me
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>We appreciate your patience and understanding</p>
+            <div class="app-version">Wanxin v2.4.1</div>
+        </div>
+    </div>
+
+    <script>
+        // Create bubble background
+        function createBubbles() {
+            const bubbles = document.getElementById('bubbles');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size and position
+                const size = Math.random() * 120 + 30;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}%`;
+                bubble.style.animationDelay = `${delay}s`;
+                bubble.style.animationDuration = `${duration}s`;
+                
+                bubbles.appendChild(bubble);
+            }
+        }
+        
+        // Countdown timer
+        function startCountdown() {
+            const daysEl = document.querySelector('.countdown-item:nth-child(1) .countdown-value');
+            const hoursEl = document.querySelector('.countdown-item:nth-child(2) .countdown-value');
+            const minutesEl = document.querySelector('.countdown-item:nth-child(3) .countdown-value');
+            const secondsEl = document.querySelector('.countdown-item:nth-child(4) .countdown-value');
+            
+            // Set target date (14 days from now)
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 14);
+            
+            function updateCountdown() {
+                const now = new Date();
+                const diff = targetDate - now;
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                daysEl.textContent = days.toString().padStart(2, '0');
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+                
+                if (diff < 0) {
+                    clearInterval(countdownInterval);
+                    daysEl.textContent = '00';
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                }
+            }
+            
+            // Initial call
+            updateCountdown();
+            
+            // Update every second
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createBubbles();
+            startCountdown();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanxin Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f0ff 0%, #f8f9ff 100%);
+            min-height: 100vh;
+            display: flex;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Bubble Texture Background */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(106, 17, 203, 0.05);
+            box-shadow: inset 0 0 15px rgba(37, 117, 252, 0.1);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
+
+        /* Main Container */
+        .settings-container {
+            display: flex;
+            width: 100%;
+            /* max-width: 1200px; */
+            height: 90vh;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            z-index: 10;
+            margin: auto;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #6a11cb;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-status {
+            font-size: 13px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+        }
+
+        /* Settings Menu */
+        .settings-menu {
+            flex: 1;
+        }
+
+        .menu-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+            padding-left: 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .menu-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: white;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .content-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-description {
+            font-size: 16px;
+            color: #666;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* Settings Content */
+        .settings-content {
+            max-width: 700px;
+        }
+
+        .settings-card {
+            background: #f8f9ff;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #eaeef5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6a11cb20 0%, #2575fc20 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #2575fc;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .settings-group {
+            margin-bottom: 25px;
+        }
+
+        .group-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s;
+        }
+
+        .setting-item:hover {
+            border-color: #d0e0ff;
+            box-shadow: 0 5px 12px rgba(37, 117, 252, 0.08);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .item-desc {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .item-action {
+            margin-left: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ddd;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(37, 117, 252, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            /* border: 2px solid #2575fc; */
+            border: none;
+            cursor: pointer;
+            color: #2575fc;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(37, 117, 252, 0.05);
+        }
+
+        /* Footer */
+        .app-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .app-version {
+            margin-top: 5px;
+            font-weight: 500;
+            color: #2575fc;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 260px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bubble texture background -->
+    <div class="bubbles" id="bubbles"></div>
+    
+    <div class="settings-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="back-button" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <!-- <img style="height: 50px;" src="logo.png" alt=""> -->
+                <div class="app-name">Wanxin</div>
+            </div>
+            
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <img style="height: 55px;" src="https://nishchalacharya.com.np/img/hero.png" alt="">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">Nishchal Acharya</div>
+                    <div class="profile-status">
+                        <div class="status-indicator"></div>
+                        <span>Online</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-menu">
+                <div class="menu-title">Settings</div>
+                
+                <div class="menu-item active" data-content="account">
+                    <div class="menu-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="menu-text">Account</div>
+                </div>
+                
+                <div class="menu-item" data-content="privacy">
+                    <div class="menu-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="menu-text">Privacy & Security</div>
+                </div>
+                
+                <div class="menu-item" data-content="devices">
+                    <div class="menu-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="menu-text">Linked Devices</div>
+                </div>
+                
+                <div class="menu-item" data-content="notifications">
+                    <div class="menu-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-text">Notifications</div>
+                </div>
+                
+                <div class="menu-item" data-content="appearance">
+                    <div class="menu-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="menu-text">Appearance</div>
+                </div>
+                
+                <div class="menu-item" data-content="storage">
+                    <div class="menu-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="menu-text">Storage & Data</div>
+                </div>
+                
+                <div class="menu-item" data-content="help">
+                    <div class="menu-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="menu-text">Help & Support</div>
+                </div>
+                
+                <div class="menu-item" data-content="about">
+                    <div class="menu-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="menu-text">About</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="content-header">
+                <h1 class="content-title">Account Settings</h1>
+                <p class="content-description">Manage your account information, security settings, and connected devices. Keep your profile up to date to enhance your Wanxin experience.</p>
+            </div>
+            
+            <div class="settings-content">
+                <!-- Profile Settings -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h2 class="card-title">Profile Information</h2>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <div class="item-title">Profile Photo</div>
+                            <div class="item-desc">Your current profile picture</div>
+                        </div>
+                        <div class="item-action">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <div class="item-title">Name</div>
+                            <div class="item-desc">Alex Johnson</div>
+                        </div>
+                        <div class="item-action">
+                            <button class="btn-outline">Edit</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <div class="item-title">About</div>
+                            <div class="item-desc">Hey there! I'm using Wanxin</div>
+                        </div>
+                        <div class="item-action">
+                            <button class="btn-outline">Edit</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Settings -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h2 class="card-title">Security</h2>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <div class="group-title">Account Protection</div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">Two-Step Verification</div>
+                                <div class="item-desc">Add an extra layer of security to your account</div>
+                            </div>
+                            <div class="item-action">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">Login Alerts</div>
+                                <div class="item-desc">Get notified when your account is accessed</div>
+                            </div>
+                            <div class="item-action">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <div class="group-title">Session Management</div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">Active Sessions</div>
+                                <div class="item-desc">2 devices currently logged in</div>
+                            </div>
+                            <div class="item-action">
+                                <button class="btn-outline">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Connected Devices -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h2 class="card-title">Linked Devices</h2>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <div class="group-title">Currently Connected</div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">iPhone 14 Pro</div>
+                                <div class="item-desc">Active now • iOS 16.4.1</div>
+                            </div>
+                            <div class="item-action">
+                                <button class="btn-outline">Manage</button>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">MacBook Pro (2022)</div>
+                                <div class="item-desc">Active 2 hours ago • macOS Ventura</div>
+                            </div>
+                            <div class="item-action">
+                                <button class="btn-outline">Manage</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <div class="group-title">Device Management</div>
+                        
+                        <div class="setting-item">
+                            <div class="item-info">
+                                <div class="item-title">Link New Device</div>
+                                <div class="item-desc">Connect another phone or computer</div>
+                            </div>
+                            <div class="item-action" onclick="development()">
+                                <button class="btn">Link Device</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account Actions -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h2 class="card-title">Account Actions</h2>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <div class="item-title">Change Phone Number</div>
+                            <div class="item-desc">Move your account to a new number</div>
+                        </div>
+                        <div class="item-action">
+                            <button class="btn-outline">Change</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="item-info">
+                            <div class="item-title">Delete Account</div>
+                            <div class="item-desc">Permanently delete your Wanxin account</div>
+                        </div>
+                        <div class="item-action">
+                            <button class="btn-outline" style="color: #dc3545;">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="app-footer">
+                    <div>Securely linked with Wanxin • Your privacy is protected</div>
+                    <div class="app-version">v2.4.1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create bubble background
+        function createBubbles() {
+            const bubbles = document.getElementById('bubbles');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size and position
+                const size = Math.random() * 120 + 30;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}%`;
+                bubble.style.animationDelay = `${delay}s`;
+                bubble.style.animationDuration = `${duration}s`;
+                
+                bubbles.appendChild(bubble);
+            }
+        }
+        
+        // Menu switching functionality
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Update content title based on selected item
+                const contentTitle = document.querySelector('.content-title');
+                const contentDesc = document.querySelector('.content-description');
+                const title = this.querySelector('.menu-text').textContent;
+                
+                contentTitle.textContent = title;
+                
+                // Update description based on selected item
+                const descriptions = {
+                    "Account": "Manage your account information, security settings, and connected devices.",
+                    "Privacy & Security": "Control who can see your information and secure your account.",
+                    "Linked Devices": "Manage devices connected to your Wanxin account.",
+                    "Notifications": "Customize how you receive alerts and notifications.",
+                    "Appearance": "Personalize the look and feel of your Wanxin experience.",
+                    "Storage & Data": "Manage your storage usage and data preferences.",
+                    "Help & Support": "Get help with Wanxin and contact our support team.",
+                    "About": "Learn more about Wanxin and check for updates."
+                };
+                
+                contentDesc.textContent = descriptions[title] || "Manage your settings for a better Wanxin experience.";
+            });
+        });
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createBubbles();
+            
+            // Add toggle switch functionality
+            document.querySelectorAll('.toggle-switch input').forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const label = this.nextElementSibling;
+                    if (this.checked) {
+                        label.style.background = 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)';
+                    } else {
+                        label.style.background = '#ddd';
+                    }
+                });
+            });
+        });
+
+
+        function development() {
+            window.location.href = "linkdevices.html";
+        }
+    </script>
+</body>
+</html>
