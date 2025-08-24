@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - QuickCalc Browser Extension</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        firefox: {
+                            light: '#FF7139',
+                            DEFAULT: '#FF7139',
+                            dark: '#E66000',
+                            purple: '#9059FF'
+                        },
+                        dark: '#202023'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #ffffff;
+            color: #374151;
+        }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, #FF7139 0%, #9059FF 100%);
+        }
+        
+        .policy-section {
+            border-left: 4px solid;
+            border-image: linear-gradient(to bottom, #FF7139, #9059FF) 1;
+        }
+        
+        .back-button {
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+        
+        h2 {
+            background: linear-gradient(135deg, #FF7139 0%, #9059FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-xl header-gradient flex items-center justify-center shadow-md">
+                    <img src="icon.png" alt="">
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900 ml-4">QuickCalc</h1>
+            </div>
+            <a href="index.html" class="back-button text-firefox-light hover:text-firefox-dark font-semibold flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 max-w-4xl">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
+            <p class="text-lg text-gray-600">Last updated: Auguest 24, 2025</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <div class="mb-10">
+                <p class="text-gray-600 mb-6">
+                    At QuickCalc, we take your privacy seriously. This Privacy Policy describes how we handle information when you use our browser extension.
+                </p>
+                <p class="text-gray-600">
+                    QuickCalc is designed with privacy in mind. We believe in transparency and want you to understand what information we collect, how we use it, and what controls you have.
+                </p>
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">1. Information We Collect</h2>
+                <p class="text-gray-600 mb-4">
+                    QuickCalc is designed to respect your privacy. We do not collect, store, or transmit any personal information.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    The extension operates entirely locally on your device. Calculations are performed within your browser and are not sent to any external servers.
+                </p>
+                <!-- <p class="text-gray-600">
+                    If you choose to use the calculation history feature, this data is stored locally on your device and is not accessible by us or any third parties.
+                </p> -->
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">2. How We Use Information</h2>
+                <p class="text-gray-600 mb-4">
+                    Since we do not collect any personal data, we do not use your information in any way.
+                </p>
+                <!-- <p class="text-gray-600">
+                    The extension requires certain permissions to function properly, but these are only used to provide the calculator functionality within your browser.
+                </p> -->
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">3. Permissions Explanation</h2>
+                <p class="text-gray-600 mb-4">
+                    QuickCalc does not requests the any browser permissions:
+                </p>
+                <!-- <ul class="list-disc pl-6 text-gray-600 mb-4">
+                    <li class="mb-2"><span class="font-semibold">Storage:</span> Used to save your calculation history locally on your device</li>
+                    <li class="mb-2"><span class="font-semibold">ActiveTab:</span> Allows the extension to interact with the current web page when you activate it</li>
+                    <li><span class="font-semibold">Scripting:</span> Required to inject the calculator interface into web pages when using the overlay mode</li>
+                </ul>
+                <p class="text-gray-600">
+                    These permissions are used solely for the functionality of the extension and are not used to collect personal data.
+                </p> -->
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">4. Third-Party Services</h2>
+                <p class="text-gray-600 mb-4">
+                    QuickCalc does not use any third-party analytics services, advertising networks, or tracking technologies.
+                </p>
+                <p class="text-gray-600">
+                    The extension does not include any external APIs or services that would transmit data outside of your browser.
+                </p>
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">5. Data Security</h2>
+                <p class="text-gray-600 mb-4">
+                    Since QuickCalc does not transmit or store your data on external servers, your calculations remain secure on your device.
+                </p>
+                <p class="text-gray-600">
+                    Any calculation history stored locally on your device is subject to your browser's security measures.
+                </p>
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">6. Children's Privacy</h2>
+                <!-- <p class="text-gray-600 mb-4">
+                    QuickCalc does not knowingly collect any personal information from children under the age of 13.
+                </p> -->
+                <p class="text-gray-600">
+                    The extension is safe for users of all ages as it does not collect, store, or transmit personal data.
+                </p>
+            </div>
+
+            <div class="policy-section pl-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4">7. Changes to This Policy</h2>
+                <p class="text-gray-600 mb-4">
+                    We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                </p>
+                <p class="text-gray-600">
+                    You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
+                </p>
+            </div>
+
+            <div class="policy-section pl-6">
+                <h2 class="text-2xl font-bold mb-4">8. Contact Us</h2>
+                <p class="text-gray-600 mb-4">
+                    If you have any questions about this Privacy Policy, please contact us:
+                </p>
+                <p class="text-gray-600">
+                    <i class="fas fa-envelope text-firefox-light mr-2"></i> Email: mail@nishchalacharya.com.np
+                </p>
+            </div>
+
+            <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Summary</h3>
+                <p class="text-gray-600">
+                    QuickCalc does not collect, store, or transmit any personal data. All calculations are performed locally on your device, and any history is stored only on your device. We believe in privacy by design and have built QuickCalc with this principle in mind.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 mt-20 py-12 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <div class="flex justify-center space-x-8 mb-6">
+                    <a href="https://nishchalacharya.com.np/twitter" class="text-gray-500 hover:text-firefox-light"><i class="fab fa-twitter text-xl"></i></a>
+                    <a href="https://nishchalacharya.com.np/github" class="text-gray-500 hover:text-firefox-light"><i class="fab fa-github text-xl"></i></a>
+                    <a href="https://nishchalacharya.com.np/linkedin" class="text-gray-500 hover:text-firefox-light"><i class="fab fa-linkedin text-xl"></i></a>
+                </div>
+                <p class="text-gray-500">© 2023 QuickCalc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
