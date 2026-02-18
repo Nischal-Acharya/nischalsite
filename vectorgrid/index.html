@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Fullscreen Word Grid Notebook</title>
+<style>
+  :root{
+    --bg1:#071a3a; --bg2:#0b2b66;
+    --card:rgba(255,255,255,.09);
+    --stroke:rgba(255,255,255,.18);
+    --text:rgba(255,255,255,.92);
+    --muted:rgba(255,255,255,.65);
+    --shadow:0 14px 40px rgba(0,0,0,.35);
+    --r:16px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--text);
+    background: radial-gradient(1100px 600px at 10% 0%, rgba(124,92,255,.35), transparent 55%),
+                radial-gradient(1000px 700px at 90% 20%, rgba(74,163,255,.35), transparent 55%),
+                linear-gradient(120deg, var(--bg1), var(--bg2));
+    height:100vh; overflow:hidden;
+  }
+
+  .gridCard{
+    position:fixed; inset:10px;
+    background:rgba(0,0,0,.14);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    backdrop-filter: blur(10px);
+    display:grid;
+    grid-template-rows:auto 1fr;
+    overflow:hidden;
+  }
+  .topBar{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:10px 12px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
+  }
+  .pill{
+    font-family:var(--mono);
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(0,0,0,.14);
+    color:rgba(255,255,255,.88);
+    white-space:nowrap;
+  }
+  .hint{font-size:12px;color:var(--muted)}
+  .gridBox{overflow:auto;height:100%}
+
+  table{
+    border-collapse:collapse;
+    width:max-content;
+    min-width:100%;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+
+  th, td{
+    border:1px solid rgba(255,255,255,.10);
+    padding:0;
+    text-align:left;
+    height:34px;
+  }
+
+  /* sticky top row */
+  th{
+    position:sticky;
+    top:0;
+    z-index:40;
+    background:rgba(10,20,45,.86);
+    backdrop-filter: blur(10px);
+    font-weight:900;
+    color:rgba(255,255,255,.86);
+    padding:6px 10px;
+  }
+
+  /* sticky left col (row index) */
+  .rowHead{
+    position:sticky;
+    left:0;
+    z-index:35;
+    background:rgba(10,20,45,.86);
+    font-weight:900;
+    color:rgba(255,255,255,.86);
+    width:54px; min-width:54px;
+    padding:6px 10px;
+    text-align:center;
+  }
+
+  .corner{z-index:60 !important}
+
+  td{
+    background:rgba(255,255,255,.03);
+    cursor:pointer;
+    width:160px; min-width:160px;
+  }
+  td:hover{background:rgba(74,163,255,.12)}
+  td.sel{
+    outline:2px solid rgba(74,163,255,.78);
+    outline-offset:-2px;
+    background:rgba(74,163,255,.16);
+  }
+  td.filled{background:rgba(255,255,255,.06)}
+
+  .cell{
+    padding:6px 10px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* sticky last col */
+  .lastCol{
+    position:sticky;
+    right:0;
+    z-index:34;
+    background:rgba(10,20,45,.35);
+    backdrop-filter: blur(10px);
+  }
+  th.lastCol{z-index:55;background:rgba(10,20,45,.88)}
+
+  /* sticky last row */
+  tr.lastRow td{
+    position:sticky;
+    bottom:0;
+    z-index:33;
+    background:rgba(10,20,45,.35);
+    backdrop-filter: blur(10px);
+  }
+  tr.lastRow td.rowHead{z-index:58;background:rgba(10,20,45,.88)}
+  tr.lastRow td.lastCol{z-index:59;background:rgba(10,20,45,.88)}
+
+  /* Floating icon buttons */
+  .fabCol{
+    position:fixed;
+    right:18px;
+    top:78px;
+    display:grid;
+    gap:10px;
+    z-index:200;
+  }
+  .fab{
+    width:44px;height:44px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.10);
+    backdrop-filter: blur(10px);
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+    color:rgba(255,255,255,.92);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    user-select:none;
+  }
+  .fab:active{transform:translateY(1px)}
+  .fab svg{width:20px;height:20px;opacity:.95}
+
+  /* Popups */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.35);
+    display:none;
+    z-index:300;
+  }
+  .overlay.show{display:block}
+  .popup{
+    position:fixed;
+    right:18px;
+    top:78px;
+    width:min(380px, calc(100vw - 36px));
+    background:var(--card);
+    border:1px solid var(--stroke);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    backdrop-filter: blur(12px);
+    padding:12px;
+    display:none;
+    z-index:310;
+  }
+  .popup.show{display:block}
+  .popupHead{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-bottom:10px;
+  }
+  .popupHead .t{font-weight:900;letter-spacing:.2px}
+  .xbtn{
+    width:34px;height:34px;border-radius:12px;
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(0,0,0,.14);
+    color:rgba(255,255,255,.9);
+    cursor:pointer;
+  }
+  .xbtn:active{transform:translateY(1px)}
+  textarea, input, select{
+    width:100%;
+    background:rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.14);
+    color:var(--text);
+    border-radius:12px;
+    padding:10px 11px;
+    outline:none;
+    font-size:13px;
+    font-family:var(--mono);
+  }
+  textarea{min-height:92px;resize:vertical}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .btn{
+    border:0;
+    border-radius:12px;
+    padding:10px 12px;
+    font-weight:900;
+    color:rgba(255,255,255,.95);
+    background:linear-gradient(135deg, rgba(74,163,255,.95), rgba(124,92,255,.95));
+    cursor:pointer;
+    user-select:none;
+    flex:1;
+  }
+  .btn2{
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.16);
+    color:rgba(255,255,255,.9);
+  }
+  .small{font-size:12px;color:var(--muted);line-height:1.35}
+  .convOut{font-family:var(--mono);font-size:12.5px;color:rgba(255,255,255,.86);word-break:break-word}
+</style>
+</head>
+<body>
+
+<div class="gridCard">
+  <div class="topBar">
+    <div class="row">
+      <span class="pill">Word Columns</span>
+      <span class="pill" id="posPill">pos: -</span>
+      <span class="pill" id="status">select a cell</span>
+    </div>
+    <div class="hint">Commands separated by “;” → become columns (like your photo)</div>
+  </div>
+  <div class="gridBox" id="gridBox"></div>
+</div>
+
+<!-- Floating icons -->
+<div class="fabCol">
+  <div class="fab" data-open="writer" title="Writer">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4l10-10-4-4L4 16v4Z" stroke="currentColor" stroke-width="2"/><path d="M13 7l4 4" stroke="currentColor" stroke-width="2"/></svg>
+  </div>
+  <div class="fab" data-open="converter" title="ASCII Converter">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10M7 12h6M7 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="fab" data-open="tools" title="Tools">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" stroke="currentColor" stroke-width="2"/></svg>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- Writer Popup -->
+<div class="popup" id="pop-writer">
+  <div class="popupHead">
+    <div class="t">Writer</div>
+    <button class="xbtn" data-close>✕</button>
+  </div>
+
+  <textarea id="bulkInput" placeholder='Example: mkdir fol; cd fol;'></textarea>
+
+  <div class="row" style="margin-top:10px">
+    <select id="layout" style="flex:1">
+      <option value="C">Commands → Columns (like photo)</option>
+      <option value="R">Commands → Rows</option>
+    </select>
+    <button class="btn" id="writeBtn">Write</button>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <button class="btn btn2" id="clearGrid">Clear Grid</button>
+  </div>
+
+  <div class="small" style="margin-top:8px">
+    Select a start cell first. Each command (split by ;) fills down with words.
+  </div>
+</div>
+
+<!-- Converter Popup -->
+<div class="popup" id="pop-converter">
+  <div class="popupHead">
+    <div class="t">ASCII Converter</div>
+    <button class="xbtn" data-close>✕</button>
+  </div>
+  <input id="convText" type="text" placeholder='Text e.g. "Hi"' />
+  <div style="height:8px"></div>
+  <input id="convAscii" type="text" placeholder="ASCII e.g. 72 105" />
+  <div style="height:10px"></div>
+  <div class="convOut" id="convOutAscii"></div>
+  <div style="height:6px"></div>
+  <div class="convOut" id="convOutText"></div>
+</div>
+
+<!-- Tools Popup -->
+<div class="popup" id="pop-tools">
+  <div class="popupHead">
+    <div class="t">Tools</div>
+    <button class="xbtn" data-close>✕</button>
+  </div>
+  <div class="row">
+    <span class="pill">Rows</span>
+    <input id="rows" type="text" value="101" style="width:90px"/>
+    <span class="pill">Cols</span>
+    <input id="cols" type="text" value="101" style="width:90px"/>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn btn2" id="resizeBtn">Apply Size</button>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn btn2" id="exportBtn">Export JSON</button>
+    <button class="btn btn2" id="importBtn">Import JSON</button>
+  </div>
+  <textarea id="jsonBox" placeholder="Export/Import JSON here..." style="margin-top:10px;min-height:140px"></textarea>
+  <div class="small" style="margin-top:10px">Pinned borders work best up to ~300x300.</div>
+</div>
+
+<script>
+  const LS_KEY = "word_grid_notebook_v1";
+  const $ = (id) => document.getElementById(id);
+
+  const state = { rows: 101, cols: 101, data: [], sel: { r:null, c:null } };
+  const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return false;
+      const p = JSON.parse(raw);
+      if(!p || !Array.isArray(p.data)) return false;
+      state.rows = p.rows; state.cols = p.cols; state.data = p.data;
+      state.sel = p.sel || state.sel;
+      return true;
+    }catch(e){ return false; }
+  }
+  function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+  function initData(r,c){
+    const g=[];
+    for(let i=0;i<r;i++){
+      const row=[];
+      for(let j=0;j<c;j++) row.push("");
+      g.push(row);
+    }
+    state.data=g;
+  }
+
+  function ensureSize(r,c){
+    r=clamp(r,1,300); c=clamp(c,1,300);
+    const old=state.data;
+    const g=[];
+    for(let i=0;i<r;i++){
+      const row=[];
+      for(let j=0;j<c;j++){
+        row.push((old[i] && old[i][j] !== undefined) ? old[i][j] : "");
+      }
+      g.push(row);
+    }
+    state.rows=r; state.cols=c; state.data=g;
+    if(state.sel.r!=null) state.sel.r = clamp(state.sel.r,0,r-1);
+    if(state.sel.c!=null) state.sel.c = clamp(state.sel.c,0,c-1);
+    save();
+  }
+
+  function updateStatus(msg){
+    const {r,c}=state.sel;
+    $("posPill").textContent = (r==null) ? "pos: -" : `pos: (${r}, ${c})`;
+    $("status").textContent = msg ?? ((r==null) ? "select a cell" : `selected (${r}, ${c})`);
+  }
+
+  function selectCell(r,c){ state.sel={r,c}; save(); render(); updateStatus(); }
+
+  function editCell(r,c){
+    const cur = state.data[r][c] || "";
+    const next = prompt(`Edit cell (${r}, ${c}) — word`, cur);
+    if(next===null) return;
+    state.data[r][c] = (next ?? "").toString().slice(0, 40);
+    save(); render(); updateStatus("edited");
+  }
+
+  function render(){
+    $("rows").value = String(state.rows);
+    $("cols").value = String(state.cols);
+
+    const box=$("gridBox");
+    box.innerHTML="";
+    const table=document.createElement("table");
+
+    const thead=document.createElement("thead");
+    const trh=document.createElement("tr");
+
+    const corner=document.createElement("th");
+    corner.className="rowHead corner";
+    corner.textContent="";
+    trh.appendChild(corner);
+
+    for(let c=0;c<state.cols;c++){
+      const th=document.createElement("th");
+      th.textContent=c;
+      if(c===state.cols-1) th.classList.add("lastCol");
+      trh.appendChild(th);
+    }
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    const tbody=document.createElement("tbody");
+    for(let r=0;r<state.rows;r++){
+      const tr=document.createElement("tr");
+      if(r===state.rows-1) tr.classList.add("lastRow");
+
+      const rh=document.createElement("td");
+      rh.className="rowHead";
+      rh.textContent=r;
+      tr.appendChild(rh);
+
+      for(let c=0;c<state.cols;c++){
+        const td=document.createElement("td");
+        const v=state.data[r]?.[c] ?? "";
+        if(v) td.classList.add("filled");
+        if(state.sel.r===r && state.sel.c===c) td.classList.add("sel");
+        if(c===state.cols-1) td.classList.add("lastCol");
+
+        const div=document.createElement("div");
+        div.className="cell";
+        div.textContent = v || "";
+        td.appendChild(div);
+
+        td.onclick=()=>selectCell(r,c);
+        td.ondblclick=()=>editCell(r,c);
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    box.appendChild(table);
+  }
+
+  function splitCommands(input){
+    return (input ?? "")
+      .split(";")
+      .map(s=>s.trim())
+      .filter(Boolean);
+  }
+  function splitWords(cmd){
+    return cmd.split(/\s+/g).map(x=>x.trim()).filter(Boolean);
+  }
+
+  // MAIN FEATURE: commands -> columns (like your photo)
+  function writeCommands(){
+    const {r,c}=state.sel;
+    if(r==null || c==null){ updateStatus("select start cell first 😅"); return; }
+    const raw = ($("bulkInput").value ?? "");
+    const cmds = splitCommands(raw);
+    if(!cmds.length){ updateStatus("type commands first bro 😄"); return; }
+
+    const mode = $("layout").value; // C or R
+
+    if(mode === "C"){
+      // each command becomes one column, words go down rows
+      for(let i=0;i<cmds.length;i++){
+        const words = splitWords(cmds[i]);
+        const col = c + i;
+        if(col >= state.cols) break;
+
+        for(let j=0;j<words.length;j++){
+          const row = r + j;
+          if(row >= state.rows) break;
+          state.data[row][col] = words[j].slice(0,40);
+        }
+      }
+      save(); render(); updateStatus(`wrote ${cmds.length} command columns`);
+      return;
+    }
+
+    // Commands -> rows (optional)
+    for(let i=0;i<cmds.length;i++){
+      const words = splitWords(cmds[i]);
+      const row = r + i;
+      if(row >= state.rows) break;
+
+      for(let j=0;j<words.length;j++){
+        const col = c + j;
+        if(col >= state.cols) break;
+        state.data[row][col] = words[j].slice(0,40);
+      }
+    }
+    save(); render(); updateStatus(`wrote ${cmds.length} command rows`);
+  }
+
+  function clearGrid(){
+    initData(state.rows,state.cols);
+    state.sel={r:null,c:null};
+    save(); render(); updateStatus("grid cleared");
+  }
+
+  function exportJSON(){
+    $("jsonBox").value = localStorage.getItem(LS_KEY) || "";
+    updateStatus("exported JSON");
+  }
+
+  function importJSON(){
+    const raw = $("jsonBox").value.trim();
+    if(!raw){ updateStatus("paste JSON first"); return; }
+    try{
+      const p=JSON.parse(raw);
+      if(!p || !Array.isArray(p.data)) throw 0;
+      localStorage.setItem(LS_KEY, raw);
+      load(); render(); updateStatus("imported ✅");
+    }catch(e){ updateStatus("JSON invalid 😭"); }
+  }
+
+  function applySize(){
+    const r=Number(($("rows").value ?? "").trim());
+    const c=Number(($("cols").value ?? "").trim());
+    if(!Number.isFinite(r)||!Number.isFinite(c)){ updateStatus("rows/cols must be numbers"); return; }
+    ensureSize(r,c); render(); updateStatus("size applied");
+  }
+
+  // Converter
+  function asciiCodesFromText(t){ const a=[]; for(let i=0;i<t.length;i++) a.push(t.charCodeAt(i)); return a; }
+  function parseNums(s){ return (s??"").split(/[^0-9]+/g).filter(Boolean).map(Number).filter(n=>Number.isFinite(n)); }
+  function textFromAscii(nums){ let out=""; for(const n of nums){ if(n>=0 && n<=1114111) out+=String.fromCodePoint(n); } return out; }
+  function updateConvFromText(){
+    const t=$("convText").value ?? "";
+    $("convOutAscii").textContent = t.length ? ("ASCII: "+asciiCodesFromText(t).join(" ")) : "";
+  }
+  function updateConvFromAscii(){
+    const nums=parseNums($("convAscii").value ?? "");
+    $("convOutText").textContent = nums.length ? ("TEXT: "+textFromAscii(nums)) : "";
+  }
+
+  // Popups
+  const overlay=$("overlay");
+  const pops={ writer:$("pop-writer"), converter:$("pop-converter"), tools:$("pop-tools") };
+  function closeAll(){
+    overlay.classList.remove("show");
+    for(const k in pops) pops[k].classList.remove("show");
+  }
+  function openPop(name){
+    closeAll();
+    overlay.classList.add("show");
+    pops[name].classList.add("show");
+  }
+  document.querySelectorAll(".fab").forEach(b=>{
+    b.addEventListener("click", ()=>openPop(b.getAttribute("data-open")));
+  });
+  overlay.addEventListener("click", closeAll);
+  document.querySelectorAll("[data-close]").forEach(x=>x.addEventListener("click", closeAll));
+
+  // Wire
+  $("writeBtn").onclick=writeCommands;
+  $("clearGrid").onclick=clearGrid;
+  $("exportBtn").onclick=exportJSON;
+  $("importBtn").onclick=importJSON;
+  $("resizeBtn").onclick=applySize;
+  $("convText").addEventListener("input", updateConvFromText);
+  $("convAscii").addEventListener("input", updateConvFromAscii);
+
+  // Init
+  const ok=load();
+  if(!ok){ initData(state.rows,state.cols); save(); }
+  render();
+  updateStatus();
+  updateConvFromText();
+  updateConvFromAscii();
+</script>
+</body>
+</html>
