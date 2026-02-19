@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Array Visualizer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #080810;
+    --border: rgba(255,255,255,0.08);
+    --accent: #00e5ff;
+    --accent2: #ff6b6b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --glass: rgba(12,12,22,0.92);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+  }
+
+  #panel {
+    width: 290px;
+    min-width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--glass);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  #panel::-webkit-scrollbar { width: 3px; }
+  #panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .panel-header {
+    padding: 16px 14px 12px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,229,255,0.03);
+    flex-shrink: 0;
+  }
+  .panel-header h1 { font-size: 14px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .panel-header p { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+  .section { padding: 11px 13px; border-bottom: 1px solid var(--border); }
+
+  .section-title {
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 9px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .row { display: flex; gap: 7px; align-items: center; margin-bottom: 7px; }
+
+  label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); min-width: 24px; }
+
+  input[type=number], input[type=text], select, textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 5px 8px;
+    outline: none; width: 100%;
+    transition: border-color 0.15s;
+  }
+  input[type=number]:focus, input[type=text]:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  input[type=number] { width: 56px; }
+  select { cursor: pointer; }
+  select option { background: #12121f; }
+  textarea { resize: vertical; min-height: 68px; font-size: 10px; line-height: 1.7; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 4px; padding: 5px 11px;
+    border-radius: 5px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  .btn.accent { background: rgba(0,229,255,0.1); border-color: var(--accent); color: var(--accent); }
+  .btn.accent:hover { background: rgba(0,229,255,0.2); }
+  .btn.danger { background: rgba(255,107,107,0.1); border-color: var(--accent2); color: var(--accent2); }
+  .btn-row { display: flex; gap: 5px; flex-wrap: wrap; }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+  .toggle-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text); }
+  .toggle { position: relative; width: 30px; height: 16px; }
+  .toggle input { display: none; }
+  .toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.08); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .toggle-slider::before { content: ''; position: absolute; left: 2px; top: 2px; width: 12px; height: 12px; background: var(--muted); border-radius: 50%; transition: 0.2s; }
+  .toggle input:checked + .toggle-slider { background: rgba(0,229,255,0.25); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(14px); background: var(--accent); }
+
+  #slice-table { font-family: 'JetBrains Mono', monospace; font-size: 10px; width: 100%; border-collapse: collapse; margin-top: 7px; }
+  #slice-table th { background: rgba(0,229,255,0.07); color: var(--accent); padding: 3px 5px; text-align: left; font-size: 8px; letter-spacing: 0.05em; }
+  #slice-table td { padding: 3px 5px; border-bottom: 1px solid var(--border); }
+
+  .legend-item { display: flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+  #canvas-area { flex: 1; position: relative; overflow: hidden; }
+  #three-canvas { display: block; width: 100%; height: 100%; }
+
+  #hud { position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+  .hud-btn {
+    background: rgba(12,12,22,0.88); border: 1px solid var(--border);
+    border-radius: 7px; padding: 6px 12px;
+    font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+    color: var(--text); cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    transition: all 0.15s; backdrop-filter: blur(8px);
+  }
+  .hud-btn:hover { background: rgba(255,255,255,0.07); }
+  .hud-btn.active { color: var(--accent); border-color: var(--accent); }
+
+  #info-bar {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    background: rgba(12,12,22,0.88); border: 1px solid var(--border);
+    border-radius: 7px; padding: 5px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+    backdrop-filter: blur(8px); white-space: nowrap;
+  }
+
+  #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  #modal-overlay.open { display: flex; }
+  #modal { background: #0e0e1e; border: 1px solid var(--border); border-radius: 10px; padding: 22px; min-width: 270px; box-shadow: 0 24px 80px rgba(0,0,0,0.9); }
+  #modal h3 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+  #modal-hint { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); margin-bottom: 10px; }
+  #modal input { width: 100%; padding: 9px 12px; font-size: 16px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <div class="panel-header">
+    <h1>3D Array</h1>
+    <p>arr[Z][Y][X] — text lives inside each cube</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Grid Size</div>
+    <div class="row">
+      <label>Z</label><input type="number" id="sz" min="1" max="8" value="3">
+      <label>Y</label><input type="number" id="sy" min="1" max="8" value="4">
+      <label>X</label><input type="number" id="sx" min="1" max="8" value="5">
+    </div>
+    <div class="btn-row">
+      <button class="btn accent" onclick="rebuildGrid()">Rebuild</button>
+      <button class="btn" onclick="fillSample()">Sample Data</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Display</div>
+    <div class="toggle-row">
+      <span class="toggle-label">Grid Edges</span>
+      <label class="toggle"><input type="checkbox" id="tog-grid" checked onchange="toggleGrid()"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">Index [z,y,x]</span>
+      <label class="toggle"><input type="checkbox" id="tog-idx" onchange="rebuildTextures()"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">Axis Labels</span>
+      <label class="toggle"><input type="checkbox" id="tog-axis" checked onchange="toggleAxisLabels()"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">Auto Rotate</span>
+      <label class="toggle"><input type="checkbox" id="tog-rotate" onchange="onToggleRotate()"><span class="toggle-slider"></span></label>
+    </div>
+    <div id="legend" style="margin-top:6px"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Highlight Slice</div>
+    <div class="row">
+      <label>Axis</label>
+      <select id="slice-axis" style="width:80px">
+        <option value="z">Z depth</option>
+        <option value="y">Y row</option>
+        <option value="x">X col</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Idx</label>
+      <input type="number" id="slice-idx" min="0" value="0" style="width:56px">
+      <button class="btn" style="padding:4px 8px;font-size:9px" onclick="applySlice()">Go</button>
+      <button class="btn" style="padding:4px 8px;font-size:9px" onclick="clearSlice()">Clear</button>
+    </div>
+    <div class="toggle-row" style="margin-top:2px">
+      <span class="toggle-label">Only This Slice</span>
+      <label class="toggle"><input type="checkbox" id="tog-only" onchange="applySlice()"><span class="toggle-slider"></span></label>
+    </div>
+    <div id="slice-wrap" style="max-height:130px;overflow-y:auto"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Search</div>
+    <div class="row">
+      <input type="text" id="search-val" placeholder="highlight matching cells…" oninput="searchCells()">
+      <button class="btn" style="padding:4px 8px;font-size:9px;flex-shrink:0" onclick="clearSearch()">✕</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Bulk Edit</div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:5px">z,y,x=value (one per line)</p>
+    <textarea id="bulk-input" placeholder="0,0,0=A&#10;0,0,1=7&#10;1,2,3=Z"></textarea>
+    <div class="btn-row" style="margin-top:7px">
+      <button class="btn accent" onclick="applyBulk()">Apply</button>
+      <button class="btn" onclick="document.getElementById('bulk-input').value=''">Clear</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Export / Import</div>
+    <div class="btn-row">
+      <button class="btn accent" onclick="exportJSON()">⬇ Export JSON</button>
+      <button class="btn" onclick="document.getElementById('import-file').click()">⬆ Import</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
+    </div>
+  </div>
+</div>
+
+<div id="canvas-area">
+  <canvas id="three-canvas"></canvas>
+  <div id="hud">
+    <button class="hud-btn" onclick="resetCamera()">↺ Reset View</button>
+    <button class="hud-btn" id="btn-rotate" onclick="onToggleRotate()">⟳ Auto Rotate</button>
+  </div>
+  <div id="info-bar">Drag to rotate · Scroll to zoom · Click cube to edit</div>
+</div>
+
+<div id="modal-overlay">
+  <div id="modal">
+    <h3 id="modal-title">Edit Cell</h3>
+    <div id="modal-hint">First character displayed large on cube face</div>
+    <input type="text" id="modal-val" maxlength="12" placeholder="A, 7, ★, π …">
+    <div class="btn-row">
+      <button class="btn accent" onclick="saveModal()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn danger" onclick="clearCell()">Clear</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════════
+let SZ = 3, SY = 4, SX = 5;
+let data = {};
+let showGrid = true, showAxis = true;
+let autoRotate = false;
+let sliceAxis = null, sliceIdx = null, onlySlice = false;
+let searchQuery = '';
+let editKey = null;
+
+const CELL = 1.5, GAP = 0.28, STEP = CELL + GAP;
+
+// Each Z layer has a dark bg + vivid accent so the character pops
+const LAYERS = [
+  { bg: '#0a2535', accent: '#00e5ff' },  // cyan
+  { bg: '#1f0d3a', accent: '#c084fc' },  // purple
+  { bg: '#350d0d', accent: '#f87171' },  // red
+  { bg: '#0d2e1a', accent: '#34d399' },  // green
+  { bg: '#2e2000', accent: '#fbbf24' },  // amber
+  { bg: '#0d1a35', accent: '#60a5fa' },  // blue
+  { bg: '#320d28', accent: '#f472b6' },  // pink
+  { bg: '#0d2828', accent: '#2dd4bf' },  // teal
+];
+
+const HL_BG = '#2d2200', HL_ACCENT = '#ffd166';
+const SR_BG = '#2d0808', SR_ACCENT = '#ff6b6b';
+const DIM = 0.06;
+
+// ═══════════════════════════════════════════════════════════════
+// Three.js
+// ═══════════════════════════════════════════════════════════════
+const canvas = document.getElementById('three-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setClearColor(0x080810, 1);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
+
+let isDragging = false, prevMouse = { x: 0, y: 0 }, mouseDownTime = 0;
+let sph = { theta: -0.5, phi: 1.0, r: 22 };
+const tgt = new THREE.Vector3();
+
+const gridGrp = new THREE.Group();
+const edgeGrp = new THREE.Group();
+const axisGrp = new THREE.Group();
+scene.add(gridGrp, edgeGrp, axisGrp);
+
+scene.add(new THREE.AmbientLight(0xffffff, 1.0));  // full ambient so textures show clearly
+
+function onResize() {
+  const a = document.getElementById('canvas-area');
+  renderer.setSize(a.clientWidth, a.clientHeight);
+  camera.aspect = a.clientWidth / a.clientHeight;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', onResize);
+onResize();
+
+function updateCam() {
+  camera.position.set(
+    tgt.x + sph.r * Math.sin(sph.phi) * Math.sin(sph.theta),
+    tgt.y + sph.r * Math.cos(sph.phi),
+    tgt.z + sph.r * Math.sin(sph.phi) * Math.cos(sph.theta)
+  );
+  camera.lookAt(tgt);
+}
+
+canvas.addEventListener('mousedown', e => { isDragging = true; mouseDownTime = Date.now(); prevMouse = { x: e.clientX, y: e.clientY }; });
+window.addEventListener('mouseup', () => isDragging = false);
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  sph.theta -= (e.clientX - prevMouse.x) * 0.007;
+  sph.phi = Math.max(0.1, Math.min(Math.PI - 0.1, sph.phi + (e.clientY - prevMouse.y) * 0.007));
+  prevMouse = { x: e.clientX, y: e.clientY };
+});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  sph.r = Math.max(4, Math.min(80, sph.r + e.deltaY * 0.035));
+}, { passive: false });
+
+let tPrev = null;
+canvas.addEventListener('touchstart', e => { tPrev = { x: e.touches[0].clientX, y: e.touches[0].clientY }; isDragging = true; mouseDownTime = Date.now(); });
+canvas.addEventListener('touchend', () => isDragging = false);
+canvas.addEventListener('touchmove', e => {
+  if (!tPrev) return;
+  sph.theta -= (e.touches[0].clientX - tPrev.x) * 0.007;
+  sph.phi = Math.max(0.1, Math.min(Math.PI - 0.1, sph.phi + (e.touches[0].clientY - tPrev.y) * 0.007));
+  tPrev = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
+
+function resetCamera() { sph = { theta: -0.5, phi: 1.0, r: defaultRadius() }; tgt.set(0,0,0); }
+function defaultRadius() { return 9 + Math.max(SX, SY, SZ) * 2.2; }
+
+// ═══════════════════════════════════════════════════════════════
+// Texture: character baked onto cube face
+// ═══════════════════════════════════════════════════════════════
+function makeTex(char, bgHex, accentHex, idxStr, showIdx) {
+  const S = 256;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = S;
+  const ctx = cv.getContext('2d');
+
+  // ── Background fill
+  ctx.fillStyle = bgHex;
+  ctx.fillRect(0, 0, S, S);
+
+  // ── Subtle inner glow gradient
+  const grd = ctx.createRadialGradient(S/2, S/2, 0, S/2, S/2, S * 0.7);
+  grd.addColorStop(0, 'rgba(255,255,255,0.06)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, S, S);
+
+  // ── Border
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 10;
+  ctx.globalAlpha = 0.55;
+  ctx.strokeRect(5, 5, S - 10, S - 10);
+  ctx.globalAlpha = 1;
+
+  // ── Inner border line
+  ctx.strokeStyle = accentHex;
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.2;
+  ctx.strokeRect(18, 18, S - 36, S - 36);
+  ctx.globalAlpha = 1;
+
+  // ── Main character — huge, centered, white with accent glow
+  if (char && String(char).trim() !== '') {
+    const ch = String(char).charAt(0);
+    ctx.font = `bold 160px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // glow pass
+    ctx.shadowColor = accentHex;
+    ctx.shadowBlur = 28;
+    ctx.fillStyle = accentHex;
+    ctx.fillText(ch, S / 2, S / 2);
+
+    // crisp white pass on top
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(ch, S / 2, S / 2);
+  } else {
+    // empty cell: faint dot
+    ctx.beginPath();
+    ctx.arc(S/2, S/2, 10, 0, Math.PI * 2);
+    ctx.fillStyle = accentHex;
+    ctx.globalAlpha = 0.2;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Index label: small, bottom-right
+  if (showIdx && idxStr) {
+    ctx.font = `600 22px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = accentHex;
+    ctx.globalAlpha = 0.65;
+    ctx.fillText(idxStr, S - 10, S - 8);
+    ctx.globalAlpha = 1;
+  }
+
+  return new THREE.CanvasTexture(cv);
+}
+
+function makeAxisSprite(text, color) {
+  const cv = document.createElement('canvas');
+  cv.width = 220; cv.height = 64;
+  const ctx = cv.getContext('2d');
+  ctx.font = 'bold 44px "JetBrains Mono", monospace';
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 110, 32);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthTest: false }));
+  sp.scale.set(2.2, 0.64, 1);
+  return sp;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Grid
+// ═══════════════════════════════════════════════════════════════
+function cellPos(z, y, x) {
+  return new THREE.Vector3(
+    -((SX - 1) * STEP) / 2 + x * STEP,
+    -((SY - 1) * STEP) / 2 + y * STEP,
+    -((SZ - 1) * STEP) / 2 + z * STEP
+  );
+}
+
+let cells = [];  // { mesh, edges, z, y, x, layer }
+
+function buildGrid() {
+  while (gridGrp.children.length) gridGrp.remove(gridGrp.children[0]);
+  while (edgeGrp.children.length) edgeGrp.remove(edgeGrp.children[0]);
+  while (axisGrp.children.length) axisGrp.remove(axisGrp.children[0]);
+  cells = [];
+
+  const geo     = new THREE.BoxGeometry(CELL, CELL, CELL);
+  const edgeGeo = new THREE.EdgesGeometry(geo);
+  const showIdx = document.getElementById('tog-idx').checked;
+
+  for (let z = 0; z < SZ; z++) {
+    const layer = LAYERS[z % LAYERS.length];
+    for (let y = 0; y < SY; y++) {
+      for (let x = 0; x < SX; x++) {
+        const pos = cellPos(z, y, x);
+        const key = `${z},${y},${x}`;
+        const val = data[key] ?? '';
+
+        // Cube with texture — MeshBasicMaterial so lighting doesn't wash it out
+        const tex = makeTex(val, layer.bg, layer.accent, `${z},${y},${x}`, showIdx);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.95 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.copy(pos);
+        mesh.userData = { z, y, x };
+        gridGrp.add(mesh);
+
+        // Edge lines
+        const eMat = new THREE.LineBasicMaterial({
+          color: new THREE.Color(layer.accent),
+          transparent: true, opacity: 0.45
+        });
+        const edges = new THREE.LineSegments(edgeGeo, eMat);
+        edges.position.copy(pos);
+        edgeGrp.add(edges);
+
+        cells.push({ mesh, edges, z, y, x, layer });
+      }
+    }
+  }
+
+  buildAxisLabels();
+  buildLegend();
+  tgt.set(0, 0, 0);
+  applyVisibility();
+}
+
+function buildAxisLabels() {
+  const hx = ((SX - 1) * STEP) / 2 + 2.4;
+  const hy = ((SY - 1) * STEP) / 2 + 2.4;
+  const hz = ((SZ - 1) * STEP) / 2 + 2.4;
+  const bx = -((SX - 1) * STEP) / 2;
+  const by = -((SY - 1) * STEP) / 2;
+  const bz = -((SZ - 1) * STEP) / 2;
+
+  const xs = makeAxisSprite('X →', '#00e5ff');
+  xs.position.set(hx, by - 0.6, bz);
+  axisGrp.add(xs);
+
+  const ys = makeAxisSprite('Y ↑', '#34d399');
+  ys.position.set(bx - 0.5, hy, bz);
+  axisGrp.add(ys);
+
+  const zs = makeAxisSprite('Z ●', '#f87171');
+  zs.position.set(bx - 0.5, by - 0.6, hz);
+  axisGrp.add(zs);
+}
+
+function buildLegend() {
+  const leg = document.getElementById('legend');
+  leg.innerHTML = '';
+  for (let z = 0; z < SZ; z++) {
+    const l = LAYERS[z % LAYERS.length];
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${l.accent}"></div> Z = ${z}`;
+    leg.appendChild(item);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Texture updates
+// ═══════════════════════════════════════════════════════════════
+function rebuildTextures() {
+  const showIdx = document.getElementById('tog-idx').checked;
+  cells.forEach(c => {
+    const val = data[`${c.z},${c.y},${c.x}`] ?? '';
+    const tex = makeTex(val, c.layer.bg, c.layer.accent, `${c.z},${c.y},${c.x}`, showIdx);
+    c.mesh.material.map = tex;
+    c.mesh.material.needsUpdate = true;
+  });
+}
+
+function refreshCell(z, y, x) {
+  const c = cells.find(c => c.z === z && c.y === y && c.x === x);
+  if (!c) return;
+  const showIdx = document.getElementById('tog-idx').checked;
+  const val = data[`${z},${y},${x}`] ?? '';
+  const tex = makeTex(val, c.layer.bg, c.layer.accent, `${z},${y},${x}`, showIdx);
+  c.mesh.material.map = tex;
+  c.mesh.material.needsUpdate = true;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Visibility & highlight
+// ═══════════════════════════════════════════════════════════════
+function applyVisibility() {
+  const sq = searchQuery.trim().toLowerCase();
+  const showIdx = document.getElementById('tog-idx').checked;
+
+  cells.forEach(({ mesh, edges, z, y, x, layer }) => {
+    const key = `${z},${y},${x}`;
+    const val = String(data[key] ?? '');
+
+    let inSlice = true;
+    if (sliceAxis !== null) {
+      if (sliceAxis === 'z') inSlice = z === sliceIdx;
+      else if (sliceAxis === 'y') inSlice = y === sliceIdx;
+      else inSlice = x === sliceIdx;
+    }
+
+    const isSearch = sq && val.toLowerCase().includes(sq);
+
+    // Hide if "only this slice" and not in slice
+    if (onlySlice && sliceAxis !== null && !inSlice) {
+      mesh.visible = edges.visible = false;
+      return;
+    }
+
+    mesh.visible = true;
+    edges.visible = showGrid;
+
+    if (isSearch) {
+      const tex = makeTex(val, SR_BG, SR_ACCENT, `${z},${y},${x}`, showIdx);
+      mesh.material.map = tex;
+      mesh.material.opacity = 0.98;
+      mesh.material.needsUpdate = true;
+      edges.material.color.set(SR_ACCENT);
+      edges.material.opacity = 0.9;
+    } else if (sliceAxis !== null && inSlice) {
+      const tex = makeTex(val, HL_BG, HL_ACCENT, `${z},${y},${x}`, showIdx);
+      mesh.material.map = tex;
+      mesh.material.opacity = 0.98;
+      mesh.material.needsUpdate = true;
+      edges.material.color.set(HL_ACCENT);
+      edges.material.opacity = 0.9;
+    } else if (sliceAxis !== null) {
+      // dimmed
+      mesh.material.opacity = DIM;
+      edges.material.opacity = 0.04;
+      // restore base tex if needed
+      const tex = makeTex(val, layer.bg, layer.accent, `${z},${y},${x}`, showIdx);
+      mesh.material.map = tex;
+      mesh.material.needsUpdate = true;
+      edges.material.color.set(layer.accent);
+    } else {
+      // normal
+      const tex = makeTex(val, layer.bg, layer.accent, `${z},${y},${x}`, showIdx);
+      mesh.material.map = tex;
+      mesh.material.opacity = 0.95;
+      mesh.material.needsUpdate = true;
+      edges.material.color.set(layer.accent);
+      edges.material.opacity = 0.45;
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Click to edit
+// ═══════════════════════════════════════════════════════════════
+const raycaster = new THREE.Raycaster();
+const mouse2d = new THREE.Vector2();
+
+canvas.addEventListener('mouseup', e => {
+  if (Date.now() - mouseDownTime > 220) return;
+  const rect = canvas.getBoundingClientRect();
+  mouse2d.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse2d.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouse2d, camera);
+  const hits = raycaster.intersectObjects(gridGrp.children);
+  if (hits.length > 0) {
+    const { z, y, x } = hits[0].object.userData;
+    openModal(z, y, x);
+  }
+});
+
+function openModal(z, y, x) {
+  editKey = `${z},${y},${x}`;
+  document.getElementById('modal-title').textContent = `arr[${z}][${y}][${x}]`;
+  document.getElementById('modal-val').value = data[editKey] ?? '';
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => { const i = document.getElementById('modal-val'); i.focus(); i.select(); }, 40);
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editKey = null; }
+function saveModal() {
+  if (!editKey) return;
+  const val = document.getElementById('modal-val').value.trim();
+  if (val) data[editKey] = val; else delete data[editKey];
+  const [z, y, x] = editKey.split(',').map(Number);
+  applyVisibility();
+  saveLocal(); updateSliceTable(); closeModal();
+}
+function clearCell() {
+  if (!editKey) return;
+  delete data[editKey];
+  const [z, y, x] = editKey.split(',').map(Number);
+  applyVisibility();
+  saveLocal(); closeModal();
+}
+document.getElementById('modal-val').addEventListener('keydown', e => { if (e.key === 'Enter') saveModal(); if (e.key === 'Escape') closeModal(); });
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
+
+// ═══════════════════════════════════════════════════════════════
+// Toggles
+// ═══════════════════════════════════════════════════════════════
+function toggleGrid() {
+  showGrid = document.getElementById('tog-grid').checked;
+  edgeGrp.children.forEach(e => e.visible = showGrid);
+}
+function toggleAxisLabels() {
+  showAxis = document.getElementById('tog-axis').checked;
+  axisGrp.visible = showAxis;
+}
+function onToggleRotate() {
+  autoRotate = document.getElementById('tog-rotate').checked;
+  document.getElementById('btn-rotate').classList.toggle('active', autoRotate);
+  document.getElementById('tog-rotate').checked = autoRotate;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Slice
+// ═══════════════════════════════════════════════════════════════
+function applySlice() {
+  sliceAxis = document.getElementById('slice-axis').value;
+  sliceIdx  = parseInt(document.getElementById('slice-idx').value);
+  onlySlice = document.getElementById('tog-only').checked;
+  applyVisibility();
+  updateSliceTable();
+}
+function clearSlice() {
+  sliceAxis = null; sliceIdx = null; onlySlice = false;
+  document.getElementById('tog-only').checked = false;
+  applyVisibility();
+  document.getElementById('slice-wrap').innerHTML = '';
+}
+function updateSliceTable() {
+  const wrap = document.getElementById('slice-wrap');
+  if (sliceAxis === null) { wrap.innerHTML = ''; return; }
+  const rows = [];
+  for (let z = 0; z < SZ; z++) for (let y = 0; y < SY; y++) for (let x = 0; x < SX; x++) {
+    const match = (sliceAxis === 'z' && z === sliceIdx) ||
+                  (sliceAxis === 'y' && y === sliceIdx) ||
+                  (sliceAxis === 'x' && x === sliceIdx);
+    if (match) rows.push({ z, y, x, val: data[`${z},${y},${x}`] ?? '' });
+  }
+  wrap.innerHTML = rows.length ? `<table id="slice-table">
+    <tr><th>Z</th><th>Y</th><th>X</th><th>Value</th></tr>
+    ${rows.map(r => `<tr><td>${r.z}</td><td>${r.y}</td><td>${r.x}</td><td>${r.val || '—'}</td></tr>`).join('')}
+  </table>` : '';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Search
+// ═══════════════════════════════════════════════════════════════
+function searchCells() { searchQuery = document.getElementById('search-val').value; applyVisibility(); }
+function clearSearch() { searchQuery = ''; document.getElementById('search-val').value = ''; applyVisibility(); }
+
+// ═══════════════════════════════════════════════════════════════
+// Sample data
+// ═══════════════════════════════════════════════════════════════
+function fillSample() {
+  data = {};
+  // Fill letters, numbers, symbols — interesting single chars
+  const samples = [
+    [0,0,0,'H'],[0,0,1,'e'],[0,0,2,'l'],[0,0,3,'l'],[0,0,4,'o'],
+    [0,1,0,'W'],[0,1,1,'o'],[0,1,2,'r'],[0,1,3,'l'],[0,1,4,'d'],
+    [0,2,0,'1'],[0,2,1,'2'],[0,2,2,'3'],[0,2,3,'4'],[0,2,4,'5'],
+    [0,3,0,'A'],[0,3,1,'B'],[0,3,2,'C'],[0,3,3,'D'],[0,3,4,'E'],
+    [1,0,0,'α'],[1,0,1,'β'],[1,0,2,'γ'],[1,0,3,'δ'],[1,0,4,'ε'],
+    [1,1,0,'P'],[1,1,1,'Q'],[1,1,2,'R'],[1,2,0,'★'],[1,2,2,'♦'],
+    [1,3,0,'7'],[1,3,2,'9'],[1,3,4,'?'],
+    [2,0,0,'π'],[2,0,2,'∞'],[2,1,1,'Ω'],[2,2,2,'Δ'],[2,3,3,'∑'],
+    [2,1,4,'Z'],[2,2,0,'X'],[2,3,1,'!'],
+  ];
+  samples.forEach(([z, y, x, v]) => {
+    if (z < SZ && y < SY && x < SX) data[`${z},${y},${x}`] = v;
+  });
+  applyVisibility();
+  saveLocal();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Bulk edit
+// ═══════════════════════════════════════════════════════════════
+function applyBulk() {
+  document.getElementById('bulk-input').value.trim().split('\n').forEach(line => {
+    const m = line.match(/^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*=\s*(.*)\s*$/);
+    if (!m) return;
+    const zi = +m[1], yi = +m[2], xi = +m[3], val = m[4].trim();
+    if (zi < SZ && yi < SY && xi < SX) {
+      if (val) data[`${zi},${yi},${xi}`] = val; else delete data[`${zi},${yi},${xi}`];
+    }
+  });
+  applyVisibility();
+  saveLocal();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Rebuild
+// ═══════════════════════════════════════════════════════════════
+function rebuildGrid() {
+  SZ = Math.max(1, Math.min(8, +document.getElementById('sz').value));
+  SY = Math.max(1, Math.min(8, +document.getElementById('sy').value));
+  SX = Math.max(1, Math.min(8, +document.getElementById('sx').value));
+  Object.keys(data).forEach(k => {
+    const [z, y, x] = k.split(',').map(Number);
+    if (z >= SZ || y >= SY || x >= SX) delete data[k];
+  });
+  sliceAxis = null; sliceIdx = null; onlySlice = false;
+  document.getElementById('tog-only').checked = false;
+  document.getElementById('slice-wrap').innerHTML = '';
+  buildGrid();
+  sph.r = defaultRadius();
+  saveLocal();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Export / Import
+// ═══════════════════════════════════════════════════════════════
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ SZ, SY, SX, data }, null, 2)], { type: 'application/json' }));
+  a.download = '3d-array.json'; a.click();
+}
+function importJSON(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const obj = JSON.parse(ev.target.result);
+      SZ = obj.SZ ?? SZ; SY = obj.SY ?? SY; SX = obj.SX ?? SX;
+      data = obj.data ?? {};
+      document.getElementById('sz').value = SZ;
+      document.getElementById('sy').value = SY;
+      document.getElementById('sx').value = SX;
+      buildGrid(); sph.r = defaultRadius(); saveLocal();
+    } catch { alert('Invalid JSON'); }
+  };
+  r.readAsText(file);
+  e.target.value = '';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LocalStorage
+// ═══════════════════════════════════════════════════════════════
+function saveLocal() {
+  localStorage.setItem('3da_v3', JSON.stringify({ SZ, SY, SX, data }));
+}
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem('3da_v3');
+    if (!raw) return;
+    const obj = JSON.parse(raw);
+    SZ = obj.SZ ?? SZ; SY = obj.SY ?? SY; SX = obj.SX ?? SX;
+    data = obj.data ?? {};
+    document.getElementById('sz').value = SZ;
+    document.getElementById('sy').value = SY;
+    document.getElementById('sx').value = SX;
+  } catch {}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Render loop
+// ═══════════════════════════════════════════════════════════════
+function animate() {
+  requestAnimationFrame(animate);
+  if (autoRotate && !isDragging) sph.theta += 0.004;
+  updateCam();
+  renderer.render(scene, camera);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════════
+loadLocal();
+buildGrid();
+sph.r = defaultRadius();
+animate();
+</script>
+</body>
+</html>
