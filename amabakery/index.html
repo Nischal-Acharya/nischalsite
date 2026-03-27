@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 Loading...</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        font-family: Arial, sans-serif;
+        color: white;
+        flex-direction: column;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+    }
+
+    .emoji {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .progress-container {
+        width: 220px;
+        height: 6px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #38bdf8;
+        animation: loading 3s linear forwards;
+    }
+
+    @keyframes loading {
+        from { width: 0%; }
+        to { width: 100%; }
+    }
+
+    .status {
+        margin-top: 15px;
+        font-size: 14px;
+        opacity: 0.85;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="emoji">🍞✨</div>
+
+<img src="logo.ico" class="logo">
+
+<div class="progress-container">
+    <div class="progress-bar"></div>
+</div>
+
+<div class="status" id="statusText">🔍 Checking internet...</div>
+
+<script>
+    function checkInternet() {
+        if (navigator.onLine) {
+            document.getElementById("statusText").innerText = "🟢 Connected! Redirecting... 🚀";
+            
+            setTimeout(() => {
+                window.location.href = "https://www.amabakeryhouse.com/counter/orders";
+            }, 3000);
+
+        } else {
+            document.getElementById("statusText").innerText = "🔴 No Internet Connection 😢📡";
+        }
+    }
+
+    window.onload = checkInternet;
+
+    window.addEventListener("online", () => {
+        document.getElementById("statusText").innerText = "🟢 Internet back! Redirecting... ⚡";
+        setTimeout(() => {
+            window.location.href = "https://www.amabakeryhouse.com/counter/orders";
+        }, 1500);
+    });
+
+    window.addEventListener("offline", () => {
+        document.getElementById("statusText").innerText = "🔴 Lost connection 😭📡";
+    });
+</script>
+
+</body>
+</html>
