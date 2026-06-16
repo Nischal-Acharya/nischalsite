@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nishchalacharya.com.np/sitemap.xml
