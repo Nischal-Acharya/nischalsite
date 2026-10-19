@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read software development, Android, AI research, backend, and career notes by Nishchal Acharya, also known as Nischal Acharya.">
+    <meta name="author" content="Nishchal Acharya">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Nishchal Acharya blog, Nischal Acharya blog, software development blog Nepal, Android blog, AI research blog, programming blog">
+    <link rel="canonical" href="https://nishchalacharya.com.np/blog/">
+    <meta property="og:title" content="Blog - Nishchal Acharya">
+    <meta property="og:description" content="Practical notes on software, Android, AI research, backend engineering, and learning by Nishchal Acharya.">
+    <meta property="og:url" content="https://nishchalacharya.com.np/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://nishchalacharya.com.np/img/hero.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog - Nishchal Acharya">
+    <meta name="twitter:description" content="Notes on building software and learning in public.">
+    <meta name="twitter:image" content="https://nishchalacharya.com.np/img/hero.png">
+    <title>Blog | Nishchal Acharya - Software, Android & AI Notes</title>
+    <link rel="shortcut icon" href="../img/hero.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../estilo.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "url": "https://nishchalacharya.com.np/blog/",
+      "name": "Nishchal Acharya Blog",
+      "description": "Software development, Android, AI research, and career notes by Nishchal Acharya.",
+      "author": {"@type": "Person", "name": "Nishchal Acharya", "url": "https://nishchalacharya.com.np/"},
+      "inLanguage": "en"
+    }
+    </script>
+    <style>
+        .blog-page { padding: 88px 0; }
+        .blog-intro { max-width: 650px; margin-bottom: 52px; }
+        .blog-intro h1 { margin: 13px 0 16px; font-size: clamp(42px, 7vw, 76px); line-height: 1; letter-spacing: -.08em; }
+        .blog-intro h1 span { color: var(--accent); }
+        .blog-intro p:last-child { color: var(--muted); font-size: 15px; }
+        .posts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .post { padding: 25px; border: 1px solid var(--line); background: var(--panel); }
+        .post:hover { border-color: #514875; }
+        .post-cover { width: calc(100% + 50px); max-width: none; height: 190px; margin: -25px -25px 22px; object-fit: cover; opacity: .82; }
+        .post h2 { margin: 9px 0 12px; font-size: 20px; line-height: 1.25; letter-spacing: -.04em; }
+        .post-meta { display: flex; gap: 12px; color: var(--muted); font: 10px 'DM Mono', monospace; }
+        .post p { color: var(--muted); font-size: 12px; line-height: 1.75; }
+        .post p + p { margin-top: 12px; }
+        .back-link { display: inline-flex; gap: 8px; margin-bottom: 35px; color: var(--soft); font: 11px 'DM Mono', monospace; }
+        .back-link:hover { color: var(--accent); }
+        @media (max-width: 620px) {
+            .blog-page { padding: 55px 0; }
+            .posts { grid-template-columns: 1fr; }
+            .post { padding: 20px; }
+            .post-cover { width: calc(100% + 40px); margin: -20px -20px 22px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a class="logo" href="../index.html">N<span>A</span></a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open menu" onclick="mostrarOcultarMenu()"><i class="fa-solid fa-bars"></i></button>
+            <nav id="nav" class="site-nav">
+                <ul>
+                    <li><a href="../index.html#about" onclick="seleccionar()">About</a></li>
+                    <li><a href="../index.html#portfolio" onclick="seleccionar()">Work</a></li>
+                    <li><a href="../index.html#curriculum" onclick="seleccionar()">Experience</a></li>
+                    <li><a href="../index.html#research" onclick="seleccionar()">Research</a></li>
+                    <li><a href="../index.html#contacto" onclick="seleccionar()">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="blog-page container">
+        <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to portfolio</a>
+        <div class="blog-intro">
+            <p class="eyebrow">Writing and notes</p>
+            <h1>Things I’m <span>learning</span> by building.</h1>
+            <p>Honest notes from the desk: the small decisions, mistakes, and discoveries behind my work in software, mobile development, research, and technical leadership.</p>
+        </div>
+        <div class="posts">
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Smartphone showing a mobile application" loading="lazy"><div class="post-meta"><span>ANDROID</span><span>6 min read</span></div><h2>What Kotlin Changed About the Way I Build Android Apps</h2><p>When I first moved from Java to Kotlin, I expected shorter code. What I did not expect was how much easier it became to express the intent of an application. Null safety, data classes, and extension functions removed a lot of noise from my day-to-day work.</p><p>The bigger lesson was not about syntax. It was about making the safe path the easy path. A good language feature is valuable when it helps the whole project stay understandable several months later.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Team planning a software product" loading="lazy"><div class="post-meta"><span>BACKEND</span><span>5 min read</span></div><h2>Start With the Problem, Not the Framework</h2><p>It is tempting to choose a stack before understanding what a product actually needs. I have done that more than once. The result is usually a collection of impressive tools solving a problem that was never clearly defined.</p><p>Now I begin with a plain sentence: who is this for, and what should become easier for them? That answer guides the database, API, and interface decisions far better than a list of trending technologies.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Team collaborating around a table" loading="lazy"><div class="post-meta"><span>LEADERSHIP</span><span>4 min read</span></div><h2>The CTO Work Nobody Sees</h2><p>Technical leadership is often described as architecture and big decisions. Those matter, but much of the real work is quieter: clarifying priorities, documenting choices, removing blockers, and helping someone feel confident enough to own a problem.</p><p>A team moves quickly when people understand why a decision was made. I try to make that context visible, even when the decision itself looks small.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Electronic circuit board representing technology research" loading="lazy"><div class="post-meta"><span>AI RESEARCH</span><span>7 min read</span></div><h2>My First Research Presentation Was More Practical Than I Expected</h2><p>Preparing research for ICOIICS 2025 taught me that a good idea is only the beginning. The difficult part is explaining the problem clearly, showing what was tested, and being honest about what still does not work.</p><p>That discipline has followed me into product development. Measurements do not replace intuition, but they keep intuition honest.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Web design screens on a desk" loading="lazy"><div class="post-meta"><span>JAVASCRIPT</span><span>5 min read</span></div><h2>Small Interfaces Deserve Serious Attention</h2><p>A button label, an empty state, or a loading message can feel too small to discuss. In practice, these are the moments users notice most. They are looking for reassurance that the system understood them.</p><p>I have started treating these details as part of the product logic, not decoration added at the end. A clear interface is often the result of clear thinking behind it.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Developers collaborating on an open source project" loading="lazy"><div class="post-meta"><span>OPEN SOURCE</span><span>4 min read</span></div><h2>Why I Keep Building Small Side Projects</h2><p>Side projects give me room to follow curiosity without pretending every experiment needs to become a business. A small programming language, a utility app, or a rough prototype can teach a lesson that a polished project hides.</p><p>Some experiments are abandoned. That is not wasted time. They become a personal library of patterns, mistakes, and ideas to revisit later.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Python code on a computer screen" loading="lazy"><div class="post-meta"><span>PYTHON</span><span>6 min read</span></div><h2>Making an API Boring Is a Good Thing</h2><p>The best API I have worked with was not clever. Its names were predictable, its errors were useful, and its behavior was consistent. That made it easy for another developer to use without reading the entire implementation.</p><p>I prefer spending time on validation, response shapes, and documentation before adding complexity. Boring systems are easier to test, operate, and trust.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Person learning software development on a laptop" loading="lazy"><div class="post-meta"><span>CAREER</span><span>5 min read</span></div><h2>Learning to Code Without Waiting to Feel Ready</h2><p>I started with tutorials, but tutorials can create a comfortable illusion of progress. The first real jump happened when I tried to build something without knowing exactly how it should work.</p><p>Being stuck became part of the process. Search, documentation, failed attempts, and asking better questions taught me more than collecting another course ever did.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Product interface design on a laptop" loading="lazy"><div class="post-meta"><span>PRODUCT</span><span>4 min read</span></div><h2>A Feature Is Not Finished When the Code Compiles</h2><p>Compilation answers one question: does the code fit the language? It does not tell us whether the feature is understandable, useful, or resilient when a real person uses it differently than expected.</p><p>I now consider testing, copy, edge cases, and feedback part of finishing. Shipping is a technical event, but usefulness is the real milestone.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Database server racks and data storage" loading="lazy"><div class="post-meta"><span>DATABASES</span><span>5 min read</span></div><h2>The Database Decisions I Wish I Made Earlier</h2><p>Early projects taught me that changing a schema later is possible but rarely free. Names, relationships, and constraints become part of every layer above them.</p><p>I do not try to predict the future perfectly. I do try to write down assumptions, keep migrations small, and choose names that will still make sense when the original context is forgotten.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Students studying together at a table" loading="lazy"><div class="post-meta"><span>STUDY</span><span>4 min read</span></div><h2>Balancing Engineering Study With Real Projects</h2><p>Classroom learning gives me foundations, while personal projects give those foundations friction. Algorithms make more sense after debugging a slow feature. Networking feels more real after an API fails in an unexpected way.</p><p>The two kinds of learning strengthen each other when I let them. I try to connect every abstract idea to something I can build or explain.</p></article>
+            <article class="post"><img class="post-cover" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Notebook and laptop used for writing technical notes" loading="lazy"><div class="post-meta"><span>REFLECTIONS</span><span>3 min read</span></div><h2>Build Things You Can Explain</h2><p>There is a useful test for any project: can I explain what it does, why it exists, and where it might fail? If I cannot, the system is probably carrying more complexity than it needs.</p><p>Clear explanations are not only for presentations. They make collaboration easier, improve documentation, and reveal gaps in our own thinking.</p></article>
+        </div>
+    </main>
+    <footer><div class="container"><span>© 2025 Nishchal Acharya. All rights reserved.</span><div class="footer-links"><a href="../index.html">Home</a><a href="mailto:mail@nishchalacharya.com.np">Mail</a><a href="https://nishchalacharya.com.np/whatsapp">WhatsApp</a><a href="../Privacy-Policy/">Privacy Policy</a></div></div></footer>
+    <script src="../script.js"></script>
+</body>
+</html>
