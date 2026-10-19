@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore projects by Nishchal Acharya (Nischal Acharya): mobile apps, websites, Python developer tools, and JavaScript browser extensions.">
+    <meta name="author" content="Nishchal Acharya">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Nishchal Acharya projects, Nischal Acharya projects, software projects Nepal, Android apps, Python tools, JavaScript extensions, web development">
+    <link rel="canonical" href="https://nishchalacharya.com.np/projects/">
+    <meta property="og:title" content="Projects - Nishchal Acharya">
+    <meta property="og:description" content="Mobile applications, websites, developer tools, and browser extensions built by Nishchal Acharya.">
+    <meta property="og:url" content="https://nishchalacharya.com.np/projects/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://nishchalacharya.com.np/img/hero.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Projects - Nishchal Acharya">
+    <meta name="twitter:description" content="Explore the software projects and experiments of Nishchal Acharya.">
+    <meta name="twitter:image" content="https://nishchalacharya.com.np/img/hero.png">
+    <title>Projects | Nishchal Acharya - Software Portfolio</title>
+    <link rel="shortcut icon" href="../img/hero.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../estilo.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "url": "https://nishchalacharya.com.np/projects/",
+      "name": "Projects by Nishchal Acharya",
+      "description": "Software projects by Nishchal Acharya, including apps, websites, tools, and browser extensions.",
+      "author": {"@type": "Person", "name": "Nishchal Acharya", "url": "https://nishchalacharya.com.np/"},
+      "inLanguage": "en"
+    }
+    </script>
+    <style>
+        .projects-page { padding: 88px 0; }
+        .projects-intro { max-width: 650px; margin-bottom: 48px; }
+        .projects-intro h1 { margin: 13px 0 16px; font-size: clamp(42px, 7vw, 76px); line-height: 1; letter-spacing: -.08em; }
+        .projects-intro h1 span { color: var(--accent); }
+        .projects-intro p:last-child { color: var(--muted); font-size: 15px; }
+        .projects-page .projects-grid { grid-template-columns: repeat(3, 1fr); }
+        .projects-more { display: flex; width: fit-content; margin: 32px auto 0; }
+        .back-link { display: inline-flex; gap: 8px; margin-bottom: 35px; color: var(--soft); font: 11px 'DM Mono', monospace; }
+        .back-link:hover { color: var(--accent); }
+        @media (max-width: 860px) { .projects-page .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 620px) {
+            .projects-page { padding: 55px 0; }
+            .projects-page .projects-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a class="logo" href="../index.html">N<span>A</span></a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open menu" onclick="mostrarOcultarMenu()"><i class="fa-solid fa-bars"></i></button>
+            <nav id="nav" class="site-nav">
+                <ul>
+                    <li><a href="../index.html#about" onclick="seleccionar()">About</a></li>
+                    <li><a href="../index.html#portfolio" onclick="seleccionar()">Work</a></li>
+                    <li><a href="../index.html#curriculum" onclick="seleccionar()">Experience</a></li>
+                    <li><a href="../index.html#research" onclick="seleccionar()">Research</a></li>
+                    <li><a href="../index.html#contacto" onclick="seleccionar()">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="projects-page container">
+        <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to portfolio</a>
+        <div class="projects-intro">
+            <p class="eyebrow">Selected work</p>
+            <h1>Projects I’ve <span>built</span>.</h1>
+            <p>A collection of mobile apps, websites, developer tools, and browser extensions built to solve practical problems and explore new ideas.</p>
+        </div>
+        <div class="projects-grid">
+            <a class="project-card" href="https://github.com/AcrNischal/Universal_Remote" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1558089687-f282ffcbc126?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Universal remote control and electronics" loading="lazy"><div class="project-copy"><span class="tag">DART · FLUTTER</span><h3>Universal Remote</h3><p>A feature-rich remote app supporting 1,600+ IR databases, custom layouts, and dual hardware transmission.</p><span class="project-action">View repository ↗</span></div></a>
+            <a class="project-card" href="https://github.com/AcrNischal/Full-School-Website" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Students learning in a classroom" loading="lazy"><div class="project-copy"><span class="tag">PHP · WEBSITE</span><h3>Full-School-Website</h3><p>An open-source school platform built to support education, communication, and online resources.</p><span class="project-action">View repository ↗</span></div></a>
+            <a class="project-card" href="https://github.com/AcrNischal/Xiaomi-EDL-Tool" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Android smartphone repair and development" loading="lazy"><div class="project-copy"><span class="tag">PYTHON · ADB</span><h3>Xiaomi-EDL-Tool</h3><p>A practical tool for detecting Xiaomi devices in EDL mode and working with ADB and Fastboot operations.</p><span class="project-action">View repository ↗</span></div></a>
+            <a class="project-card" href="https://github.com/AcrNischal/PopupTranslate" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Language translation and dictionary books" loading="lazy"><div class="project-copy"><span class="tag">JAVASCRIPT · EXTENSION</span><h3>PopupTranslate</h3><p>A privacy-first browser translation extension for selected text and quick dictionary definitions.</p><span class="project-action">View repository ↗</span></div></a>
+            <a class="project-card" href="https://github.com/AcrNischal/Daraz-Spend-Lens" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Online shopping package and ecommerce delivery" loading="lazy"><div class="project-copy"><span class="tag">JAVASCRIPT · EXTENSION</span><h3>Daraz Spend Lens</h3><p>A browser extension that helps shoppers track purchased Daraz products and order history.</p><span class="project-action">View repository ↗</span></div></a>
+            <a class="project-card" href="https://github.com/AcrNischal/TwitterAccountLocationFlag" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Social media conversation on a smartphone" loading="lazy"><div class="project-copy"><span class="tag">JAVASCRIPT · EXTENSION</span><h3>Twitter Account Location Flag</h3><p>A privacy-first extension that displays country flags beside usernames based on account location.</p><span class="project-action">View repository ↗</span></div></a>
+        </div>
+        <a class="button projects-more" href="https://github.com/AcrNischal?tab=repositories" target="_blank" rel="noopener">View more on GitHub <i class="fa-brands fa-github"></i></a>
+    </main>
+    <footer><div class="container"><span>© 2025 Nishchal Acharya. All rights reserved.</span><div class="footer-links"><a href="../index.html">Home</a><a href="https://github.com/AcrNischal?tab=repositories">GitHub</a><a href="mailto:mail@nishchalacharya.com.np">Mail</a><a href="https://nishchalacharya.com.np/whatsapp">WhatsApp</a><a href="../Privacy-Policy/">Privacy Policy</a></div></div></footer>
+    <script src="../script.js"></script>
+</body>
+</html>
