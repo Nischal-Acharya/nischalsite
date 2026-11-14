@@ -825,8 +825,7 @@
         board: board.slice(),
         turn: turn,
         lastMove: lastMove.slice(),
-        highlights: Array.from(highlights),
-        arrows: arrows.map(function (a) { return { from: a.from, to: a.to }; })
+        highlights: Array.from(highlights)
       };
     }
     function applySnapshot(s) {
@@ -834,10 +833,9 @@
       turn = s.turn;
       lastMove = s.lastMove.slice();
       highlights = new Set(s.highlights);
-      arrows = s.arrows.map(function (a) { return { from: a.from, to: a.to }; });
       selectedSq = null;
       legalSquares.clear();
-      render();   // keeps current Select/Erase mode
+      render();   // arrows are not part of undo/redo; keeps current Select/Erase mode
     }
     function pushHistory() {
       undoStack.push(snapshot());
@@ -1095,6 +1093,8 @@
         // Mouse down for drag / right-arrow
         (function (idx) {
           sq.addEventListener('mousedown', function (e) {
+            var ae = document.activeElement;
+            if (ae && ae !== document.body && ae.matches && ae.matches('input, textarea, select')) ae.blur();
             if (e.button === 2) {
               e.preventDefault();
               rightDragging = true;
@@ -1199,9 +1199,22 @@
       }
 
       // 2. Move mode (default)
-      // Click = select only. Clicking any piece selects it (never captures).
+      // Click a piece = select it, unless it is a legal capture for the selected piece.
       // Clicking an empty square moves the selected piece there.
       if (board[i]) {
+        // Selected piece + clicked square is a legal capture → capture it
+        if (selectedSq !== null && selectedSq !== i && board[selectedSq] &&
+            getLegalMoves(selectedSq).indexOf(i) !== -1) {
+          pushHistory();
+          board[i] = board[selectedSq];
+          board[selectedSq] = null;
+          lastMove = [selectedSq, i];
+          selectedSq = null;
+          turn = turn === 'w' ? 'b' : 'w';
+          render();
+          return;
+        }
+        // Otherwise just select (or deselect) the clicked piece
         selectedSq = (selectedSq === i) ? null : i;
         render();
         return;
@@ -1252,9 +1265,16 @@
           var toIdx = parseInt(sq.dataset.idx, 10);
           if (didDrag && toIdx !== rightStartIdx) {
             var fromAlg = sqToAlg(rightStartIdx), toAlg = sqToAlg(toIdx);
-            var exists = arrows.some(function (a) { return a.from === fromAlg && a.to === toAlg; });
-            if (!exists) {
-              pushHistory();
+            var exIdx = -1;
+            for (var ai = 0; ai < arrows.length; ai++) {
+              if (arrows[ai].from === fromAlg && arrows[ai].to === toAlg) { exIdx = ai; break; }
+            }
+            if (exIdx !== -1) {
+              // Same arrow drawn again → remove just that arrow
+              arrows.splice(exIdx, 1);
+              render();
+              toast('Arrow removed');
+            } else {
               arrows.push({ from: fromAlg, to: toAlg });
               render();
               toast(fromAlg + ' → ' + toAlg);
@@ -1395,7 +1415,7 @@
       highlights.clear(); render(); toast('Highlights cleared');
     });
     document.getElementById('clearArrows').addEventListener('click', function () {
-      if (arrows.length) { pushHistory(); arrows = []; render(); toast('Arrows cleared'); }
+      if (arrows.length) { arrows = []; render(); toast('Arrows cleared'); }
     });
     hlInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); applyHighlightFromInput(); }
@@ -1674,10 +1694,13 @@
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.target.matches('input, textarea, select')) {
-        if (e.key === 'Escape') e.target.blur();
+      var tg = e.target;
+      var typing = tg.matches && (tg.matches('textarea') || tg.matches('input[type=text], input[type=search], input:not([type])'));
+      if (typing) {
+        if (e.key === 'Escape') tg.blur();
         return;
       }
+      if (tg.matches && tg.matches('select, input') && tg.blur && (e.key === 'z' || e.key === 'Z' || e.key === 'y' || e.key === 'Y')) tg.blur();
       var k = e.key;
       if (k === 'f' || k === 'F') {
         flipped = !flipped;
@@ -1690,7 +1713,7 @@
         if (e.shiftKey) clearBoardPieces();
         else { if (highlights.size) pushHistory(); highlights.clear(); render(); toast('HL cleared'); }
       } else if (k === 'a' || k === 'A') {
-        if (arrows.length) { pushHistory(); arrows = []; render(); toast('Arrows cleared'); }
+        if (arrows.length) { arrows = []; render(); toast('Arrows cleared'); }
       } else if (k === 'e' || k === 'E') {
         emptyAll();
       } else if (k === 's' || k === 'S') {
