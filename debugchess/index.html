@@ -153,29 +153,49 @@
     .sq .piece {
       line-height: 1;
       pointer-events: none;
-      color: #1a1a1a;
-      text-shadow:
-        0 0 1px #fff,
-        0 1px 2px rgba(0,0,0,0.35),
-        0 0 6px rgba(255,255,255,0.4);
-      transition: transform 0.1s, color 0.2s, text-shadow 0.2s;
+      transition: transform 0.1s;
       z-index: 2;
-      font-weight: 500;
+      font-weight: 600;
     }
     .sq:hover .piece { transform: scale(1.07); }
-    /* Dark mode: force high-contrast pieces */
-    [data-theme="dark"] .sq .piece {
-      color: #f5f5f5;
+
+    /* White pieces = white/light */
+    .sq .piece.white {
+      color: #f8f8f8;
+      -webkit-text-stroke: 0.5px #222;
       text-shadow:
-        0 0 2px #000,
-        0 1px 3px rgba(0,0,0,0.9),
-        0 0 8px rgba(0,0,0,0.6),
-        1px 1px 0 rgba(0,0,0,0.5),
-        -1px -1px 0 rgba(0,0,0,0.5);
+        0 0 1px #000,
+        1px 1px 0 #222,
+        -1px -1px 0 #222,
+        1px -1px 0 #222,
+        -1px 1px 0 #222,
+        0 2px 3px rgba(0,0,0,0.35);
     }
-    [data-theme="dark"] .piece-btn {
+    /* Black pieces = dark */
+    .sq .piece.black {
+      color: #1a1a1a;
+      -webkit-text-stroke: 0.4px #111;
+      text-shadow:
+        0 0 1px #fff,
+        0 1px 2px rgba(0,0,0,0.25);
+    }
+
+    /* Palette buttons */
+    .piece-btn.white-piece {
       color: #f0f0f0;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      text-shadow: 0 0 1px #000, 1px 1px 0 #333, -1px -1px 0 #333;
+    }
+    .piece-btn.black-piece {
+      color: #1a1a1a;
+      text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    }
+    [data-theme="dark"] .piece-btn.black-piece {
+      color: #111;
+      background: #c8c8c8;
+    }
+    [data-theme="dark"] .piece-btn.white-piece {
+      color: #f5f5f5;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #000;
     }
     .sq.hl { box-shadow: inset 0 0 0 999px var(--highlight); }
     .sq.legal { box-shadow: inset 0 0 0 999px var(--legal); }
@@ -496,14 +516,17 @@
       z-index: 50;
       opacity: 0.95;
       transform: translate(-50%, -50%);
-      color: #1a1a1a;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
-      text-shadow: 0 0 4px #fff, 0 1px 3px rgba(0,0,0,0.4);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+      font-weight: 600;
     }
-    [data-theme="dark"] .drag-ghost {
-      color: #f5f5f5;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
-      text-shadow: 0 0 3px #000, 0 1px 4px rgba(0,0,0,0.9);
+    .drag-ghost.white {
+      color: #f8f8f8;
+      -webkit-text-stroke: 0.5px #222;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #222, -1px -1px 0 #222;
+    }
+    .drag-ghost.black {
+      color: #1a1a1a;
+      text-shadow: 0 0 2px #fff, 0 1px 2px rgba(0,0,0,0.3);
     }
   </style>
 </head>
@@ -593,18 +616,18 @@
         <div class="tab-panel" id="panel-pieces">
           <div class="panel-title">Pieces — drag onto board or click then place</div>
           <div class="piece-grid" id="pieceGrid">
-            <button class="piece-btn" draggable="true" data-piece="K" title="K">♔</button>
-            <button class="piece-btn" draggable="true" data-piece="Q" title="Q">♕</button>
-            <button class="piece-btn" draggable="true" data-piece="R" title="R">♖</button>
-            <button class="piece-btn" draggable="true" data-piece="B" title="B">♗</button>
-            <button class="piece-btn" draggable="true" data-piece="N" title="N">♘</button>
-            <button class="piece-btn" draggable="true" data-piece="P" title="P">♙</button>
-            <button class="piece-btn" draggable="true" data-piece="k" title="k">♚</button>
-            <button class="piece-btn" draggable="true" data-piece="q" title="q">♛</button>
-            <button class="piece-btn" draggable="true" data-piece="r" title="r">♜</button>
-            <button class="piece-btn" draggable="true" data-piece="b" title="b">♝</button>
-            <button class="piece-btn" draggable="true" data-piece="n" title="n">♞</button>
-            <button class="piece-btn" draggable="true" data-piece="p" title="p">♟</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="K" title="K">♔</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="Q" title="Q">♕</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="R" title="R">♖</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="B" title="B">♗</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="N" title="N">♘</button>
+            <button class="piece-btn white-piece" draggable="true" data-piece="P" title="P">♙</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="k" title="k">♚</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="q" title="q">♛</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="r" title="r">♜</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="b" title="b">♝</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="n" title="n">♞</button>
+            <button class="piece-btn black-piece" draggable="true" data-piece="p" title="p">♟</button>
             <button class="piece-btn empty" data-piece="" title="Erase (X)">✕</button>
           </div>
           <div style="margin-top:10px">
@@ -1020,7 +1043,8 @@
 
         if (board[i]) {
           var span = document.createElement('span');
-          span.className = 'piece';
+          var isW = board[i] === board[i].toUpperCase() && PIECES[board[i]];
+          span.className = 'piece ' + (isW ? 'white' : 'black');
           span.textContent = PIECES[board[i]] || board[i];
           sq.appendChild(span);
         }
@@ -1059,7 +1083,8 @@
               isDragging = true;
               dragFrom = idx;
               ghost = document.createElement('div');
-              ghost.className = 'drag-ghost';
+              var isW = board[idx] === board[idx].toUpperCase() && PIECES[board[idx]];
+              ghost.className = 'drag-ghost ' + (isW ? 'white' : 'black');
               ghost.textContent = PIECES[board[idx]] || board[idx];
               document.body.appendChild(ghost);
               ghost.style.left = e.clientX + 'px';
@@ -1387,8 +1412,60 @@
     legalToggle.addEventListener('change', function () {
       showLegal = legalToggle.checked;
       if (!showLegal) legalSquares.clear();
+      saveSettings();
       render();
     });
+
+    function saveSettings() {
+      try {
+        var data = {
+          boardTheme: document.getElementById('themeSelect').value,
+          lightSq: document.getElementById('lightSqColor').value,
+          darkSq: document.getElementById('darkSqColor').value,
+          showCoords: showCoords,
+          flipped: flipped,
+          showLegal: showLegal
+        };
+        localStorage.setItem('chess-dbg-settings', JSON.stringify(data));
+      } catch (e) {}
+    }
+    function loadSettings() {
+      try {
+        var raw = localStorage.getItem('chess-dbg-settings');
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        if (data.boardTheme && BOARD_THEMES[data.boardTheme]) {
+          document.getElementById('themeSelect').value = data.boardTheme;
+        }
+        if (data.lightSq) {
+          document.documentElement.style.setProperty('--light-sq', data.lightSq);
+          document.getElementById('lightSqColor').value = data.lightSq;
+        }
+        if (data.darkSq) {
+          document.documentElement.style.setProperty('--dark-sq', data.darkSq);
+          document.getElementById('darkSqColor').value = data.darkSq;
+        }
+        // If a named theme was chosen and no custom override intent, apply theme colors
+        // (custom colors already applied above if present)
+        if (data.boardTheme && BOARD_THEMES[data.boardTheme] && !data.lightSq) {
+          var t = BOARD_THEMES[data.boardTheme];
+          document.documentElement.style.setProperty('--light-sq', t.light);
+          document.documentElement.style.setProperty('--dark-sq', t.dark);
+        }
+        if (typeof data.showCoords === 'boolean') {
+          showCoords = data.showCoords;
+          document.getElementById('coordsToggle').checked = showCoords;
+        }
+        if (typeof data.flipped === 'boolean') {
+          flipped = data.flipped;
+          document.getElementById('flipToggle').checked = flipped;
+        }
+        if (typeof data.showLegal === 'boolean') {
+          showLegal = data.showLegal;
+          document.getElementById('legalToggle').checked = showLegal;
+        }
+      } catch (e) {}
+    }
 
     var themeSelect = document.getElementById('themeSelect');
     themeSelect.addEventListener('change', function () {
@@ -1399,19 +1476,26 @@
         document.getElementById('lightSqColor').value = t.light;
         document.getElementById('darkSqColor').value = t.dark;
       }
+      saveSettings();
     });
     document.getElementById('lightSqColor').addEventListener('input', function (e) {
       document.documentElement.style.setProperty('--light-sq', e.target.value);
+      saveSettings();
     });
     document.getElementById('darkSqColor').addEventListener('input', function (e) {
       document.documentElement.style.setProperty('--dark-sq', e.target.value);
+      saveSettings();
     });
 
     document.getElementById('coordsToggle').addEventListener('change', function (e) {
-      showCoords = e.target.checked; render();
+      showCoords = e.target.checked;
+      saveSettings();
+      render();
     });
     document.getElementById('flipToggle').addEventListener('change', function (e) {
-      flipped = e.target.checked; render();
+      flipped = e.target.checked;
+      saveSettings();
+      render();
     });
 
     document.getElementById('loadFen').addEventListener('click', function () {
@@ -1440,6 +1524,7 @@
     document.getElementById('flipBtn').addEventListener('click', function () {
       flipped = !flipped;
       document.getElementById('flipToggle').checked = flipped;
+      saveSettings();
       render();
     });
 
@@ -1544,6 +1629,7 @@
       if (k === 'f' || k === 'F') {
         flipped = !flipped;
         document.getElementById('flipToggle').checked = flipped;
+        saveSettings();
         render();
       } else if (k === 't' || k === 'T') {
         themeBtn.click();
@@ -1564,11 +1650,13 @@
         showLegal = !showLegal;
         legalToggle.checked = showLegal;
         if (!showLegal) legalSquares.clear();
+        saveSettings();
         render();
         toast(showLegal ? 'Legal moves ON' : 'Legal moves OFF');
       } else if (k === 'o' || k === 'O') {
         showCoords = !showCoords;
         document.getElementById('coordsToggle').checked = showCoords;
+        saveSettings();
         render();
       } else if (k === '?' || k === '/') {
         helpModal.classList.add('open');
@@ -1598,6 +1686,7 @@
 
     // ========== INIT ==========
     try {
+      loadSettings();
       fenToBoard(START_FEN);
       pushHistory();
       render();
