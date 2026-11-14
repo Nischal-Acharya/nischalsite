@@ -574,6 +574,8 @@
           <option value="pawns">Pawns Only</option>
           <option value="endgame">Basic Endgame</option>
         </select>
+        <button class="btn sm" id="modeSelectBtn" title="Select / move pieces (Esc)">Select</button>
+        <button class="btn sm" id="modeEraseBtn" title="Erase pieces — click or drag (X)">Erase</button>
         <button class="btn sm" id="clearBoard">Clear Pieces</button>
         <button class="btn sm" id="emptyBoard">Empty Board</button>
         <button class="btn sm" id="startPos">Start</button>
@@ -777,13 +779,12 @@
     let legalSquares = new Set();
     let showLegal = false;
     let lastMove = [];
-    let history = [];
-    let histIdx = -1;
     let turn = 'w';
     let arrows = [];
 
     let rightDragging = false, rightStartIdx = null, rightStartX = 0, rightStartY = 0, didDrag = false;
     let isDragging = false, dragFrom = null;
+    let erasing = false, eraseHandled = false, eraseDidPush = false;
     let ghost = null;
     let paletteDragPiece = null;    // piece being dragged from palette
 
@@ -817,30 +818,41 @@
       if (!a || !b) return false;
       return (isWhite(a) && isWhite(b)) || (isBlack(a) && isBlack(b));
     }
-    function pushHistory() {
-      history = history.slice(0, histIdx + 1);
-      history.push({
+    // Undo/redo: pushHistory() is called BEFORE each change and saves the current state.
+    var undoStack = [], redoStack = [];
+    function snapshot() {
+      return {
         board: board.slice(),
         turn: turn,
+        lastMove: lastMove.slice(),
         highlights: Array.from(highlights),
         arrows: arrows.map(function (a) { return { from: a.from, to: a.to }; })
-      });
-      histIdx = history.length - 1;
-      if (history.length > 80) { history.shift(); histIdx--; }
+      };
     }
-    function restoreHistory(idx) {
-      if (idx < 0 || idx >= history.length) return;
-      var s = history[idx];
+    function applySnapshot(s) {
       board = s.board.slice();
       turn = s.turn;
+      lastMove = s.lastMove.slice();
       highlights = new Set(s.highlights);
       arrows = s.arrows.map(function (a) { return { from: a.from, to: a.to }; });
-      histIdx = idx;
       selectedSq = null;
-      placePiece = null;
       legalSquares.clear();
-      clearPieceBtnActive();
-      render();
+      render();   // keeps current Select/Erase mode
+    }
+    function pushHistory() {
+      undoStack.push(snapshot());
+      if (undoStack.length > 100) undoStack.shift();
+      redoStack = [];
+    }
+    function undo() {
+      if (!undoStack.length) { toast('Nothing to undo'); return; }
+      redoStack.push(snapshot());
+      applySnapshot(undoStack.pop());
+    }
+    function redo() {
+      if (!redoStack.length) { toast('Nothing to redo'); return; }
+      undoStack.push(snapshot());
+      applySnapshot(redoStack.pop());
     }
 
     function boardToFen() {
@@ -1090,6 +1102,13 @@
               rightStartX = e.clientX;
               rightStartY = e.clientY;
               didDrag = false;
+            } else if (e.button === 0 && placePiece === '' && !e.shiftKey) {
+              // Erase mode: press + drag across squares clears them
+              e.preventDefault();
+              erasing = true;
+              eraseHandled = true;
+              eraseDidPush = false;
+              eraseSquare(idx);
             } else if (e.button === 0 && board[idx]) {
               isDragging = true;
               dragFrom = idx;
@@ -1138,6 +1157,10 @@
       if (fenInput) fenInput.value = boardToFen();
       var turnBadge = document.getElementById('turnBadge');
       var selBadge = document.getElementById('selectedBadge');
+      var selBtn = document.getElementById('modeSelectBtn');
+      var eraBtn = document.getElementById('modeEraseBtn');
+      if (selBtn) selBtn.classList.toggle('primary', placePiece === null);
+      if (eraBtn) eraBtn.classList.toggle('primary', placePiece === '');
       var modeBadge = document.getElementById('modeBadge');
       if (turnBadge) turnBadge.textContent = turn === 'w' ? 'White to move' : 'Black to move';
       if (selBadge) selBadge.textContent = selectedSq !== null ? 'Sel: ' + sqToAlg(selectedSq) : 'No selection';
@@ -1154,11 +1177,15 @@
     function onSquareClick(i, e) {
       if (e.shiftKey) {
         var alg = sqToAlg(i);
+        pushHistory();
         if (highlights.has(alg)) highlights.delete(alg);
         else highlights.add(alg);
         render();
         return;
       }
+
+      // Erase already handled by mousedown/drag
+      if (placePiece === '' && eraseHandled) { eraseHandled = false; return; }
 
       // 1. Placement mode (user explicitly selected a palette piece)
       if (placePiece !== null) {
@@ -1172,41 +1199,38 @@
       }
 
       // 2. Move mode (default)
-      if (selectedSq === null) {
-        // Select a piece
-        if (board[i]) {
-          selectedSq = i;
-          render();
-        }
-      } else {
-        if (selectedSq === i) {
-          // Deselect
-          selectedSq = null;
-          render();
-        } else {
-          // Move the selected piece to this square (or capture)
-          // Respect legal moves if toggle is on
-          if (showLegal && !legalSquares.has(i) && board[selectedSq]) {
-            // Not a legal square — if there's a piece, select it instead
-            if (board[i]) {
-              selectedSq = i;
-              render();
-            }
-            return;
-          }
-          pushHistory();
-          board[i] = board[selectedSq];
-          board[selectedSq] = null;
-          lastMove = [selectedSq, i];
-          selectedSq = null;
-          turn = turn === 'w' ? 'b' : 'w';
-          render();
-        }
+      // Click = select only. Clicking any piece selects it (never captures).
+      // Clicking an empty square moves the selected piece there.
+      if (board[i]) {
+        selectedSq = (selectedSq === i) ? null : i;
+        render();
+        return;
       }
+      if (selectedSq === null) return;
+      pushHistory();
+      board[i] = board[selectedSq];
+      board[selectedSq] = null;
+      lastMove = [selectedSq, i];
+      selectedSq = null;
+      turn = turn === 'w' ? 'b' : 'w';
+      render();
+    }
+
+    function eraseSquare(idx) {
+      if (!board[idx]) return;
+      if (!eraseDidPush) { pushHistory(); eraseDidPush = true; }
+      board[idx] = null;
+      if (selectedSq === idx) selectedSq = null;
+      render();
     }
 
     // Global mouse
     document.addEventListener('mousemove', function (e) {
+      if (erasing) {
+        var ee = document.elementFromPoint(e.clientX, e.clientY);
+        var esq = ee && ee.closest ? ee.closest('.sq') : null;
+        if (esq) eraseSquare(parseInt(esq.dataset.idx, 10));
+      }
       if (ghost) {
         ghost.style.left = e.clientX + 'px';
         ghost.style.top = e.clientY + 'px';
@@ -1218,6 +1242,7 @@
 
     document.addEventListener('mouseup', function (e) {
       if (ghost) { ghost.remove(); ghost = null; }
+      if (erasing) { erasing = false; setTimeout(function () { eraseHandled = false; }, 0); return; }
 
       if (e.button === 2 && rightDragging) {
         rightDragging = false;
@@ -1252,6 +1277,7 @@
         var sq2 = el2 && el2.closest ? el2.closest('.sq') : null;
         if (sq2) {
           var to = parseInt(sq2.dataset.idx, 10);
+          // Legal moves toggle is display-only: drag anywhere.
           if (to !== dragFrom) {
             pushHistory();
             board[to] = board[dragFrom];
@@ -1386,6 +1412,22 @@
       var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
       return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
     }
+
+    // Board mode toggle: Select vs Erase
+    document.getElementById('modeSelectBtn').addEventListener('click', function () {
+      placePiece = null;
+      clearPieceBtnActive();
+      render();
+    });
+    document.getElementById('modeEraseBtn').addEventListener('click', function () {
+      placePiece = '';
+      selectedSq = null;
+      legalSquares.clear();
+      clearPieceBtnActive();
+      var eb = document.querySelector('.piece-btn.empty');
+      if (eb) eb.classList.add('active');
+      render();
+    });
 
     // Piece palette — click to select for placement, drag to drop
     var pieceBtns = document.querySelectorAll('.piece-btn');
@@ -1530,8 +1572,8 @@
       }
     });
 
-    document.getElementById('undoBtn').addEventListener('click', function () { restoreHistory(histIdx - 1); });
-    document.getElementById('redoBtn').addEventListener('click', function () { restoreHistory(histIdx + 1); });
+    document.getElementById('undoBtn').addEventListener('click', function () { undo(); });
+    document.getElementById('redoBtn').addEventListener('click', function () { redo(); });
     document.getElementById('flipBtn').addEventListener('click', function () {
       flipped = !flipped;
       document.getElementById('flipToggle').checked = flipped;
@@ -1646,7 +1688,7 @@
         themeBtn.click();
       } else if (k === 'c' || k === 'C') {
         if (e.shiftKey) clearBoardPieces();
-        else { highlights.clear(); render(); toast('HL cleared'); }
+        else { if (highlights.size) pushHistory(); highlights.clear(); render(); toast('HL cleared'); }
       } else if (k === 'a' || k === 'A') {
         if (arrows.length) { pushHistory(); arrows = []; render(); toast('Arrows cleared'); }
       } else if (k === 'e' || k === 'E') {
@@ -1654,9 +1696,9 @@
       } else if (k === 's' || k === 'S') {
         setStart();
       } else if (k === 'z' || k === 'Z') {
-        restoreHistory(histIdx - 1);
+        undo();
       } else if (k === 'y' || k === 'Y') {
-        restoreHistory(histIdx + 1);
+        redo();
       } else if (k === 'l' || k === 'L') {
         showLegal = !showLegal;
         legalToggle.checked = showLegal;
@@ -1699,7 +1741,7 @@
     try {
       loadSettings();
       fenToBoard(START_FEN);
-      pushHistory();
+      undoStack = []; redoStack = [];
       render();
     } catch (err) {
       console.error(err);
